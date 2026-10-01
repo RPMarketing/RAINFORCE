@@ -79,7 +79,7 @@ textarea{min-height:90px;resize:vertical}
 const CONFIG = {
   webAppUrl: "https://script.google.com/macros/s/AKfycbyLXxJpnwoAc0rHIJP6KR_CHqQMlkYp-IuiThvY2ThVAAW0cHktB8-5XJQaRK8NtlJBDQ/exec",   // RainForce Web App URL (ends with /exec)
   company: "RainPhil Inc. · Applications",
-  feedbackUrl: "../feedback/",
+  feedbackUrl: "feedback.html",              // same folder as this page
   requirePhone: true,
   requireEmail: true
 };
@@ -210,7 +210,9 @@ async function showPicker() {
 }
 
 (async function init() {
-  if (CONFIG.webAppUrl.indexOf("http") !== 0) return fatal("This page isn't set up yet (Web App URL missing).");
+  CONFIG.webAppUrl = String(CONFIG.webAppUrl || "").trim().replace(/[?#].*$/, "");
+  if (/PASTE_YOUR/i.test(CONFIG.webAppUrl) || !CONFIG.webAppUrl) return fatal("This page isn't set up yet — the Web App URL in this file is still empty. (Page version 3)");
+  if (!/^https:\/\/script\.google\.com\/.+\/exec$/.test(CONFIG.webAppUrl)) return fatal("The Web App URL in this file doesn't look right. It should start with https://script.google.com/ and end with /exec. Found: " + CONFIG.webAppUrl + " (Page version 3)");
   if (!CODE) return showPicker();
   try {
     const res = await api({ api: "job", code: CODE }, "GET");
