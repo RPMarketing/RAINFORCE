@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Feedback · RainPhil Applications</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>:root{--navy:#0a1930;--navy2:#13284a;--brass:#cda144;--brass2:#e3c27a;--bg:#f4f1ea;--card:#fff;--ink:#1c2433;--mute:#6b7385;--line:#e4dfd3;--ok:#1f7a4d;--bad:#b3261e}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:Manrope,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);font-size:15.5px;line-height:1.5;padding-bottom:env(safe-area-inset-bottom,0px)}
+.hero{background:var(--navy);color:#fff;padding:calc(28px + env(safe-area-inset-top,0px)) 20px 70px;text-align:center;border-bottom:4px solid var(--brass)}
+.brand{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--brass2);font-weight:700}
+.hero h1{margin:10px auto 6px;font-size:clamp(22px,5vw,30px);line-height:1.25;max-width:640px}
+.meta{color:#c9d2e3;font-size:14px;max-width:640px;margin:0 auto}
+.meta span{display:inline-block;margin:2px 8px}
+.wrap{max-width:640px;margin:-48px auto 30px;padding:0 14px}
+.card{background:var(--card);border-radius:16px;box-shadow:0 8px 30px rgba(10,25,48,.10);padding:22px 20px;margin-bottom:16px}
+.card h2{margin:0 0 4px;font-size:18px;color:var(--navy)}
+.card .sub{color:var(--mute);font-size:13.5px;margin:0 0 14px}
+label{display:block;font-weight:700;font-size:13.5px;margin:14px 0 6px;color:var(--navy2)}
+label .req{color:var(--bad)}
+input[type=text],input[type=email],input[type=tel],select,textarea{width:100%;padding:12px 13px;border:1.5px solid var(--line);border-radius:10px;font:inherit;background:#fff;color:var(--ink)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--brass)}
+textarea{min-height:90px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+@media(max-width:520px){.row{grid-template-columns:1fr}}
+.choices{display:flex;flex-wrap:wrap;gap:8px}
+.choices label{margin:0;font-weight:600;display:flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;cursor:pointer}
+.choices input{accent-color:var(--navy)}
+.choices label:has(input:checked){border-color:var(--brass);background:#fbf6ea}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.scale button{border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:10px 0 6px;font:inherit;font-weight:800;color:var(--navy);cursor:pointer}
+.scale button small{display:block;font-size:10px;font-weight:600;color:var(--mute);line-height:1.2;margin-top:2px}
+.scale button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.scale button.on small{color:var(--brass2)}
+.q{padding:12px 0;border-top:1px solid var(--line)}
+.q:first-of-type{border-top:0}
+.q .qt{font-weight:700;font-size:14px;margin-bottom:8px}
+.btn{display:block;width:100%;border:0;border-radius:12px;padding:15px;font:inherit;font-weight:800;font-size:16px;background:var(--navy);color:#fff;cursor:pointer;margin-top:18px}
+.btn:disabled{opacity:.55;cursor:wait}
+.btn.ghost{background:transparent;color:var(--navy);border:1.5px solid var(--line);font-size:14px;padding:11px}
+.msg{padding:12px 14px;border-radius:10px;font-size:14px;margin-top:14px;display:none}
+.msg.err{display:block;background:#fdecea;color:var(--bad)}
+.done{text-align:center;padding:34px 20px}
+.done .tick{width:64px;height:64px;border-radius:50%;background:var(--ok);color:#fff;font-size:34px;line-height:64px;margin:0 auto 12px}
+.match{border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:8px;cursor:pointer;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.match.on{border-color:var(--brass);background:#fbf6ea}
+.match small{color:var(--mute)}
+.pill{font-size:11px;font-weight:700;background:#e9eef7;color:var(--navy2);padding:3px 8px;border-radius:999px;white-space:nowrap}
+.trainor{background:#f8f6f0;border-radius:12px;padding:6px 14px 10px;margin-top:12px}
+.trainor h3{margin:10px 0 2px;font-size:15px;color:var(--navy)}
+.foot{text-align:center;color:var(--mute);font-size:12px;margin:10px 0 30px}
+.hidden{display:none!important}
+.loading{text-align:center;color:var(--mute);padding:40px 0}
+.info{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14px;background:#f8f6f0;border-radius:12px;padding:14px 16px;margin-bottom:6px}
+.info dt{color:var(--mute);font-weight:600}.info dd{margin:0;font-weight:700;color:var(--navy)}
+.hint{font-size:12px;color:var(--mute);font-weight:600;margin-top:-2px;margin-bottom:6px}
+.stars{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.stars button{background:none;border:0;padding:2px;font-size:32px;line-height:1;color:#d9d3c4;cursor:pointer;transition:transform .1s}
+.stars button.on{color:var(--brass)}
+.stars button:active{transform:scale(1.15)}
+.stars .lbl{font-size:12.5px;font-weight:700;color:var(--navy2);margin-left:8px;min-width:110px}
+.who{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#fbf6ea;border:1.5px solid var(--brass);border-radius:12px;padding:12px 14px;margin-top:10px}
+.who small{color:var(--mute)}
+.linkbtn{background:none;border:0;color:var(--navy2);font:inherit;font-weight:700;text-decoration:underline;cursor:pointer;font-size:13px}
+</style>
+</head>
+<body>
+<!--
+  RainForce · Applications — FEEDBACK PAGE
+  Link: https://rpmarketing.github.io/RainForceApps/feedback/?c=ABC123
+  Like Rainlink: participants type their name, pick it from the attendance list and their details
+  are filled in. Date, Activity, Title and Trainor come from the job.
+  Stars: 1 = Strongly Disagree … 5 = Strongly Agree.
+-->
+<script>
+const CONFIG = {
+  webAppUrl: "PASTE_YOUR_WEB_APP_URL_HERE",   // same URL as the attendance page
+  company: "RainPhil Inc. · Applications",
+  SCALE: ["Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"],   // 1 → 5 stars
+  // Rated once for the session
+  STATEMENTS: [
+    "The objectives of the training were clearly defined.",
+    "Participation and interaction were encouraged.",
+    "The topics covered were relevant to me.",
+    "The content was organized and easy to follow.",
+    "The materials distributed were helpful.",
+    "This training experience will be useful in my work.",
+    "The training objectives were met.",
+    "The time allotted for the training was sufficient.",
+    "The meeting room and facilities were adequate and comfortable."
+  ],
+  // Rated for each trainor on the job (one set if there's only one trainor)
+  TRAINER_STATEMENTS: [
+    "The trainer was knowledgeable about the training topics.",
+    "The trainer was well prepared."
+  ],
+  QUESTIONS: [
+    "What did you like most about this training?",
+    "What aspects of the training could be improved?",
+    "How do you hope to change your practice as a result of this training?",
+    "What additional training would you like to have in the future?"
+  ],
+  commentsLabel: "Please share other comments here."
+};
+</script>
+
+<div class="hero">
+  <div class="brand" id="brand"></div>
+  <h1 id="title">Feedback</h1>
+  <div class="meta" id="meta"></div>
+</div>
+<div class="wrap">
+  <div class="card" id="loading"><div class="loading">Loading…</div></div>
+
+  <div class="card hidden" id="whoCard">
+    <h2>Your details</h2>
+    <p class="sub">Type your name as you wrote it in the attendance, then tap it — your details fill in automatically.</p>
+    <div id="findBox">
+      <input type="text" id="nameQ" placeholder="e.g. JUAN DELA CRUZ" autocomplete="name" oninput="queueLookup()">
+      <div id="matches"></div>
+      <button class="btn ghost" style="margin-top:12px;" onclick="showManual()">I didn't sign the attendance</button>
+    </div>
+    <div id="picked" class="hidden"></div>
+    <div id="manual" class="hidden">
+      <label>Full Name <span class="req">*</span></label><div class="hint">e.g. JUAN DELA CRUZ</div><input type="text" id="mName">
+      <label>Institution / Company Affiliated <span class="req">*</span></label><div class="hint">e.g. RAINPHIL, INC.</div><input type="text" id="mInst">
+      <div class="row">
+        <div><label>Phone Number</label><input type="tel" id="mPhone" inputmode="tel"></div>
+        <div><label>Email Address</label><input type="email" id="mEmail"></div>
+      </div>
+      <button class="linkbtn" style="margin-top:10px;" onclick="showFind()">← Find my name instead</button>
+    </div>
+    <dl class="info" id="info" style="margin-top:16px;"></dl>
+  </div>
+
+  <div class="card hidden" id="rateCard">
+    <h2>Your level of agreement</h2>
+    <p class="sub">1 star = Strongly Disagree · 5 stars = Strongly Agree</p>
+    <div id="statements"></div>
+    <div id="trainers"></div>
+  </div>
+
+  <div class="card hidden" id="moreCard">
+    <h2>Tell us more</h2>
+    <div id="questions"></div>
+    <label id="cmtLabel"></label><textarea id="comments"></textarea>
+    <div class="msg" id="msg"></div>
+    <button class="btn" id="submitBtn" onclick="submitFb()">Submit</button>
+  </div>
+
+  <div class="card done hidden" id="doneCard">
+    <div class="tick">✓</div>
+    <h2>Thank you!</h2>
+    <p class="sub" id="doneSub">Your feedback helps us improve our trainings and demos.</p>
+  </div>
+  <div class="foot" id="foot"></div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const CODE = (new URLSearchParams(location.search).get("c") || "").trim().toUpperCase();
+let JOB = null, PICK = null, MANUAL = false, lookupTimer = null, lookupSeq = 0, MATCHES = [];
+const RATE = { event: {}, trainor: {} };
+
+function fmtDate(iso) { return iso ? new Date(iso + "T00:00:00").toLocaleDateString("en-PH", { month: "long", day: "numeric", year: "numeric" }) : ""; }
+function when(j) { return fmtDate(j.date) + (j.endDate && j.endDate !== j.date ? " – " + fmtDate(j.endDate) : ""); }
+function activity(j) {
+  const map = { Presentation: "Product Presentation", Demonstration: "Demonstration", Training: "Training" };
+  const a = String(j.jobType || "").split(/\s*,\s*/).map(t => map[t]).filter(Boolean);
+  return a.length ? a.join(", ") : String(j.jobType || "");
+}
+function fatal(text) { $("loading").innerHTML = '<div class="loading">' + esc(text) + "</div>"; }
+async function api(payload, method) {
+  if (method === "GET") return (await fetch(CONFIG.webAppUrl + "?" + new URLSearchParams(payload).toString())).json();
+  return (await fetch(CONFIG.webAppUrl, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) })).json();
+}
+
+/* ---- star ratings ---- */
+function starsHtml(group, key) {
+  return `<div class="stars" data-g="${esc(group)}" data-k="${esc(key)}">${CONFIG.SCALE.map((l, i) =>
+    `<button type="button" aria-label="${esc(l)}" title="${esc(l)}" onclick="rate(this,${i + 1})">★</button>`).join("")}<span class="lbl"></span></div>`;
+}
+function rate(btn, v) {
+  const box = btn.parentNode, g = box.dataset.g, k = box.dataset.k;
+  box.querySelectorAll("button").forEach((b, i) => b.classList.toggle("on", i < v));
+  box.querySelector(".lbl").textContent = CONFIG.SCALE[v - 1];
+  if (g === "__event") RATE.event[k] = v; else (RATE.trainor[g] = RATE.trainor[g] || {})[k] = v;
+}
+
+/* ---- find your name (from the attendance), like Rainlink ---- */
+function queueLookup() { clearTimeout(lookupTimer); lookupTimer = setTimeout(lookup, 350); }
+async function lookup() {
+  const q = $("nameQ").value.trim(), seq = ++lookupSeq;
+  if (q.replace(/[^a-z]/gi, "").length < 3) { $("matches").innerHTML = ""; return; }
+  $("matches").innerHTML = '<p class="sub" style="margin:10px 0 0;">Searching…</p>';
+  try {
+    const res = await api({ api: "lookup", code: CODE, name: q }, "GET");
+    if (seq !== lookupSeq) return;
+    if (!res.ok) { $("matches").innerHTML = `<p class="sub" style="margin:10px 0 0;">${esc(res.error)}</p>`; return; }
+    MATCHES = res.matches;
+    if (!MATCHES.length) { $("matches").innerHTML = '<p class="sub" style="margin:10px 0 0;">No match yet — check the spelling, or tap "I didn\'t sign the attendance".</p>'; return; }
+    $("matches").innerHTML = MATCHES.map((m, i) => `<div class="match" onclick="pick(${i})">
+      <div><strong>${esc(m.name)}</strong><br><small>${esc([m.institution, m.email].filter(Boolean).join(" · "))}</small></div>
+      ${m.answered ? '<span class="pill">Answered — tap to update</span>' : ""}</div>`).join("");
+  } catch (e) { $("matches").innerHTML = '<p class="sub" style="margin:10px 0 0;">Couldn\'t search right now. Try again in a moment.</p>'; }
+}
+function pick(i) {
+  PICK = MATCHES[i]; MANUAL = false;
+  $("findBox").classList.add("hidden"); $("manual").classList.add("hidden");
+  $("picked").innerHTML = `<div class="who"><div><strong>${esc(PICK.name)}</strong><br><small>${esc([PICK.institution, PICK.email].filter(Boolean).join(" · "))}</small></div>
+    <button class="linkbtn" onclick="showFind()">Not you?</button></div>`;
+  $("picked").classList.remove("hidden"); revealRest();
+}
+function showManual() {
+  PICK = null; MANUAL = true;
+  $("findBox").classList.add("hidden"); $("picked").classList.add("hidden"); $("manual").classList.remove("hidden");
+  if (!$("mName").value) $("mName").value = $("nameQ").value;
+  if (!$("mInst").value) $("mInst").value = JOB.institution || "";
+  revealRest();
+}
+function showFind() {
+  PICK = null; MANUAL = false;
+  $("picked").classList.add("hidden"); $("manual").classList.add("hidden"); $("findBox").classList.remove("hidden");
+  $("nameQ").focus();
+}
+function revealRest() { $("rateCard").classList.remove("hidden"); $("moreCard").classList.remove("hidden"); }
+
+function render() {
+  $("brand").textContent = CONFIG.company;
+  $("title").textContent = JOB.title || "Feedback";
+  document.title = "Feedback · " + (JOB.title || "RainPhil");
+  $("meta").innerHTML = [JOB.institution, when(JOB)].filter(Boolean).map(x => "<span>" + esc(x) + "</span>").join("·");
+  $("info").innerHTML = [["Date", when(JOB)], ["Activity", activity(JOB)], ["Title", JOB.title], ["Facilitator / Trainor", JOB.trainors.join(", ")]]
+    .filter(p => p[1]).map(p => `<dt>${esc(p[0])}</dt><dd>${esc(p[1])}</dd>`).join("");
+  $("statements").innerHTML = CONFIG.STATEMENTS.map(q => `<div class="q"><div class="qt">${esc(q)}</div>${starsHtml("__event", q)}</div>`).join("");
+  const many = JOB.trainors.length > 1;
+  $("trainers").innerHTML = JOB.trainors.map(t => `<div class="trainor">${many ? `<h3>${esc(t)}</h3>` : ""}${CONFIG.TRAINER_STATEMENTS.map(c =>
+    `<div class="q"><div class="qt">${esc(many ? c.replace(/^The trainer/, t) : c)}</div>${starsHtml(t, c)}</div>`).join("")}</div>`).join("");
+  $("questions").innerHTML = CONFIG.QUESTIONS.map((q, i) => `<label>${esc(q)}</label><textarea id="q${i}"></textarea>`).join("");
+  $("cmtLabel").textContent = CONFIG.commentsLabel;
+  $("foot").textContent = "Ref. " + JOB.requestId;
+  $("loading").classList.add("hidden"); $("whoCard").classList.remove("hidden");
+}
+
+function showErr(t) { const m = $("msg"); m.textContent = t; m.className = "msg err"; }
+async function submitFb() {
+  $("msg").className = "msg";
+  if (!PICK && !MANUAL) return showErr("Please find your name first (top of the page).");
+  const data = { ratings: RATE.event, trainorRatings: RATE.trainor, answers: {}, comments: $("comments").value.trim() };
+  if (PICK) data.attendeeId = PICK.id;
+  else {
+    data.fullName = $("mName").value.trim(); data.institution = $("mInst").value.trim(); data.email = $("mEmail").value.trim();
+    if (data.fullName.split(/\s+/).length < 2) return showErr("Please type your full name.");
+    if (!data.institution) return showErr("Please type your institution or company.");
+    if ($("mPhone").value.trim()) data.answers["Phone Number"] = $("mPhone").value.trim();
+  }
+  const miss = CONFIG.STATEMENTS.find(q => !RATE.event[q]);
+  if (miss) return showErr("Please rate: " + miss);
+  for (const t of JOB.trainors) {
+    const m = CONFIG.TRAINER_STATEMENTS.find(c => !(RATE.trainor[t] || {})[c]);
+    if (m) return showErr("Please rate: " + (JOB.trainors.length > 1 ? m.replace(/^The trainer/, t) : m));
+  }
+  CONFIG.QUESTIONS.forEach((q, i) => { const v = $("q" + i).value.trim(); if (v) data.answers[q] = v; });
+  const btn = $("submitBtn"); btn.disabled = true; btn.textContent = "Submitting…";
+  try {
+    const res = await api({ api: "feedback", code: CODE, data: data });
+    if (!res.ok) throw new Error(res.error || "Something went wrong.");
+    ["whoCard", "rateCard", "moreCard"].forEach(id => $(id).classList.add("hidden"));
+    if (res.updated) $("doneSub").textContent = "Your earlier answers were updated.";
+    $("doneCard").classList.remove("hidden"); window.scrollTo(0, 0);
+  } catch (e) {
+    showErr(e.message || "We couldn't reach the server. Please check your connection and try again.");
+  } finally { btn.disabled = false; btn.textContent = "Submit"; }
+}
+
+(async function init() {
+  if (!CODE) return fatal("This link is missing its code. Please scan the QR code from the RainPhil specialist again.");
+  if (CONFIG.webAppUrl.indexOf("http") !== 0) return fatal("This page isn't set up yet (Web App URL missing).");
+  try {
+    const res = await api({ api: "job", code: CODE }, "GET");
+    if (!res.ok) return fatal(res.error);
+    JOB = res.job; render();
+  } catch (e) { fatal("We couldn't load this session. Please check your connection and refresh."); }
+})();
+</script>
+</body>
+</html>
