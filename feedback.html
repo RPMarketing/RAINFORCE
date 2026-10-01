@@ -77,7 +77,7 @@ textarea{min-height:90px;resize:vertical}
 -->
 <script>
 const CONFIG = {
-  webAppUrl: "PASTE_YOUR_WEB_APP_URL_HERE",   // same URL as the attendance page
+  webAppUrl: "https://script.google.com/macros/s/AKfycbyLXxJpnwoAc0rHIJP6KR_CHqQMlkYp-IuiThvY2ThVAAW0cHktB8-5XJQaRK8NtlJBDQ/exec",   // same URL as the attendance page
   company: "RainPhil Inc. · Applications",
   SCALE: ["Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"],   // 1 → 5 stars
   // Rated once for the session
@@ -277,9 +277,31 @@ async function submitFb() {
   } finally { btn.disabled = false; btn.textContent = "Submit"; }
 }
 
+
+/* ---- opened without ?c=CODE: pick the session from a list, or type the code ---- */
+function openCode(c) { c = String(c || "").trim().toUpperCase(); if (c) location.search = "?c=" + encodeURIComponent(c); }
+async function showPicker() {
+  $("brand").textContent = CONFIG.company;
+  $("loading").innerHTML = `<h2>Which session are you in?</h2>
+    <p class="sub">Tap your session below, or type the code the RainPhil specialist gave you.</p>
+    <div id="sessList"><p class="sub">Loading sessions…</p></div>
+    <label>Session code</label>
+    <div style="display:flex;gap:8px;"><input type="text" id="codeIn" placeholder="e.g. 8R86Y4" maxlength="8" autocapitalize="characters"
+      style="text-transform:uppercase;letter-spacing:.15em;font-weight:800;" onkeydown="if(event.key==='Enter')openCode(this.value)">
+      <button class="btn" style="width:auto;margin:0;padding:0 20px;" onclick="openCode($('codeIn').value)">Go</button></div>`;
+  try {
+    const res = await api({ api: "sessions", days: 7 }, "GET");
+    const list = res.ok ? res.sessions : [];
+    $("sessList").innerHTML = list.length ? list.map(x => `<div class="match" onclick="openCode('${esc(x.code)}')">
+        <div><strong>${esc(x.title)}</strong><br><small>${esc([x.institution, fmtDate(x.date), x.time].filter(Boolean).join(" · "))}</small></div>
+        <span class="pill">Open →</span></div>`).join("")
+      : `<p class="sub">No sessions are listed for ${7 ? "the past week" : "today"}. Please type the code instead.</p>`;
+  } catch (e) { $("sessList").innerHTML = '<p class="sub">Couldn\'t load the sessions. Please type the code instead.</p>'; }
+}
+
 (async function init() {
-  if (!CODE) return fatal("This link is missing its code. Please scan the QR code from the RainPhil specialist again.");
   if (CONFIG.webAppUrl.indexOf("http") !== 0) return fatal("This page isn't set up yet (Web App URL missing).");
+  if (!CODE) return showPicker();
   try {
     const res = await api({ api: "job", code: CODE }, "GET");
     if (!res.ok) return fatal(res.error);
