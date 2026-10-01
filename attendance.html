@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Attendance · RainPhil Applications</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>:root{--navy:#0a1930;--navy2:#13284a;--brass:#cda144;--brass2:#e3c27a;--bg:#f4f1ea;--card:#fff;--ink:#1c2433;--mute:#6b7385;--line:#e4dfd3;--ok:#1f7a4d;--bad:#b3261e}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:Manrope,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);font-size:15.5px;line-height:1.5;padding-bottom:env(safe-area-inset-bottom,0px)}
+.hero{background:var(--navy);color:#fff;padding:calc(28px + env(safe-area-inset-top,0px)) 20px 70px;text-align:center;border-bottom:4px solid var(--brass)}
+.brand{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--brass2);font-weight:700}
+.hero h1{margin:10px auto 6px;font-size:clamp(22px,5vw,30px);line-height:1.25;max-width:640px}
+.meta{color:#c9d2e3;font-size:14px;max-width:640px;margin:0 auto}
+.meta span{display:inline-block;margin:2px 8px}
+.wrap{max-width:640px;margin:-48px auto 30px;padding:0 14px}
+.card{background:var(--card);border-radius:16px;box-shadow:0 8px 30px rgba(10,25,48,.10);padding:22px 20px;margin-bottom:16px}
+.card h2{margin:0 0 4px;font-size:18px;color:var(--navy)}
+.card .sub{color:var(--mute);font-size:13.5px;margin:0 0 14px}
+label{display:block;font-weight:700;font-size:13.5px;margin:14px 0 6px;color:var(--navy2)}
+label .req{color:var(--bad)}
+input[type=text],input[type=email],input[type=tel],select,textarea{width:100%;padding:12px 13px;border:1.5px solid var(--line);border-radius:10px;font:inherit;background:#fff;color:var(--ink)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--brass)}
+textarea{min-height:90px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+@media(max-width:520px){.row{grid-template-columns:1fr}}
+.choices{display:flex;flex-wrap:wrap;gap:8px}
+.choices label{margin:0;font-weight:600;display:flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;cursor:pointer}
+.choices input{accent-color:var(--navy)}
+.choices label:has(input:checked){border-color:var(--brass);background:#fbf6ea}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.scale button{border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:10px 0 6px;font:inherit;font-weight:800;color:var(--navy);cursor:pointer}
+.scale button small{display:block;font-size:10px;font-weight:600;color:var(--mute);line-height:1.2;margin-top:2px}
+.scale button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.scale button.on small{color:var(--brass2)}
+.q{padding:12px 0;border-top:1px solid var(--line)}
+.q:first-of-type{border-top:0}
+.q .qt{font-weight:700;font-size:14px;margin-bottom:8px}
+.btn{display:block;width:100%;border:0;border-radius:12px;padding:15px;font:inherit;font-weight:800;font-size:16px;background:var(--navy);color:#fff;cursor:pointer;margin-top:18px}
+.btn:disabled{opacity:.55;cursor:wait}
+.btn.ghost{background:transparent;color:var(--navy);border:1.5px solid var(--line);font-size:14px;padding:11px}
+.msg{padding:12px 14px;border-radius:10px;font-size:14px;margin-top:14px;display:none}
+.msg.err{display:block;background:#fdecea;color:var(--bad)}
+.done{text-align:center;padding:34px 20px}
+.done .tick{width:64px;height:64px;border-radius:50%;background:var(--ok);color:#fff;font-size:34px;line-height:64px;margin:0 auto 12px}
+.match{border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:8px;cursor:pointer;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.match.on{border-color:var(--brass);background:#fbf6ea}
+.match small{color:var(--mute)}
+.pill{font-size:11px;font-weight:700;background:#e9eef7;color:var(--navy2);padding:3px 8px;border-radius:999px;white-space:nowrap}
+.trainor{background:#f8f6f0;border-radius:12px;padding:6px 14px 10px;margin-top:12px}
+.trainor h3{margin:10px 0 2px;font-size:15px;color:var(--navy)}
+.foot{text-align:center;color:var(--mute);font-size:12px;margin:10px 0 30px}
+.hidden{display:none!important}
+.loading{text-align:center;color:var(--mute);padding:40px 0}
+.info{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14px;background:#f8f6f0;border-radius:12px;padding:14px 16px;margin-bottom:6px}
+.info dt{color:var(--mute);font-weight:600}.info dd{margin:0;font-weight:700;color:var(--navy)}
+.hint{font-size:12px;color:var(--mute);font-weight:600;margin-top:-2px;margin-bottom:6px}
+.stars{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.stars button{background:none;border:0;padding:2px;font-size:32px;line-height:1;color:#d9d3c4;cursor:pointer;transition:transform .1s}
+.stars button.on{color:var(--brass)}
+.stars button:active{transform:scale(1.15)}
+.stars .lbl{font-size:12.5px;font-weight:700;color:var(--navy2);margin-left:8px;min-width:110px}
+.who{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#fbf6ea;border:1.5px solid var(--brass);border-radius:12px;padding:12px 14px;margin-top:10px}
+.who small{color:var(--mute)}
+.linkbtn{background:none;border:0;color:var(--navy2);font:inherit;font-weight:700;text-decoration:underline;cursor:pointer;font-size:13px}
+</style>
+</head>
+<body>
+<!--
+  RainForce · Applications — ATTENDANCE PAGE
+  Link: https://rpmarketing.github.io/RainForceApps/attendance/?c=ABC123
+  (The specialist gets the link + QR from RainForce → My Apps Jobs → Attendance & Feedback.)
+  Date, Activity, Title and Facilitator/Trainor come from the job itself, so participants only
+  type their name, institution, phone and email.
+-->
+<script>
+const CONFIG = {
+  webAppUrl: "PASTE_YOUR_WEB_APP_URL_HERE",   // RainForce Web App URL (ends with /exec)
+  company: "RainPhil Inc. · Applications",
+  feedbackUrl: "../feedback/",
+  requirePhone: true,
+  requireEmail: true
+};
+</script>
+
+<div class="hero">
+  <div class="brand" id="brand"></div>
+  <h1 id="title">Attendance</h1>
+  <div class="meta" id="meta"></div>
+</div>
+<div class="wrap">
+  <div class="card" id="loading"><div class="loading">Loading…</div></div>
+
+  <div class="card hidden" id="formCard">
+    <h2>Attendance</h2>
+    <p class="sub">Please type your name the way it should appear on your certificate.</p>
+    <dl class="info" id="info"></dl>
+
+    <label>Full Name <span class="req">*</span></label>
+    <div class="hint">e.g. JUAN DELA CRUZ</div>
+    <input type="text" id="fullName" autocomplete="name" autocapitalize="characters">
+
+    <label>Institution / Company Affiliated <span class="req">*</span></label>
+    <div class="hint">e.g. RAINPHIL, INC.</div>
+    <input type="text" id="institution" autocomplete="organization">
+
+    <div class="row">
+      <div><label>Phone Number <span class="req" id="phReq">*</span></label><input type="tel" id="mobile" autocomplete="tel" inputmode="tel"></div>
+      <div><label>Email Address <span class="req" id="emReq">*</span></label><input type="email" id="email" autocomplete="email"></div>
+    </div>
+
+    <div class="msg" id="msg"></div>
+    <button class="btn" id="submitBtn" onclick="submitAtt()">Submit</button>
+  </div>
+
+  <div class="card done hidden" id="doneCard">
+    <div class="tick">✓</div>
+    <h2 id="doneTitle">You're signed in</h2>
+    <p class="sub" id="doneSub">Thank you for joining us today.</p>
+    <a class="btn ghost" id="fbLink" href="#">Answer the feedback form →</a>
+  </div>
+  <div class="foot" id="foot"></div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const CODE = (new URLSearchParams(location.search).get("c") || "").trim().toUpperCase();
+let JOB = null;
+
+function fmtDate(iso) { return iso ? new Date(iso + "T00:00:00").toLocaleDateString("en-PH", { month: "long", day: "numeric", year: "numeric" }) : ""; }
+function when(j) { return fmtDate(j.date) + (j.endDate && j.endDate !== j.date ? " – " + fmtDate(j.endDate) : ""); }
+function activity(j) {   // only the activities the MS Form lists
+  const map = { Presentation: "Product Presentation", Demonstration: "Demonstration", Training: "Training" };
+  const a = String(j.jobType || "").split(/\s*,\s*/).map(t => map[t]).filter(Boolean);
+  return a.length ? a.join(", ") : String(j.jobType || "");
+}
+function fatal(text) { $("loading").innerHTML = '<div class="loading">' + esc(text) + "</div>"; }
+async function api(payload, method) {
+  if (method === "GET") return (await fetch(CONFIG.webAppUrl + "?" + new URLSearchParams(payload).toString())).json();
+  // text/plain avoids a CORS preflight, which Apps Script can't answer.
+  return (await fetch(CONFIG.webAppUrl, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) })).json();
+}
+
+function render() {
+  $("brand").textContent = CONFIG.company;
+  $("title").textContent = JOB.title || "Attendance";
+  document.title = "Attendance · " + (JOB.title || "RainPhil");
+  $("meta").innerHTML = [JOB.institution, JOB.venue && JOB.venue !== JOB.institution ? JOB.venue : "", when(JOB)]
+    .filter(Boolean).map(x => "<span>" + esc(x) + "</span>").join("·");
+  $("info").innerHTML = [["Date", when(JOB)], ["Activity", activity(JOB)], ["Title", JOB.title], ["Facilitator / Trainor", JOB.trainors.join(", ")]]
+    .filter(p => p[1]).map(p => `<dt>${esc(p[0])}</dt><dd>${esc(p[1])}</dd>`).join("");
+  $("institution").value = JOB.institution || "";
+  if (!CONFIG.requirePhone) $("phReq").remove();
+  if (!CONFIG.requireEmail) $("emReq").remove();
+  $("fbLink").href = CONFIG.feedbackUrl + "?c=" + encodeURIComponent(CODE);
+  $("foot").textContent = "Ref. " + JOB.requestId;
+  $("loading").classList.add("hidden");
+  $("formCard").classList.remove("hidden");
+}
+
+function showErr(t) { const m = $("msg"); m.textContent = t; m.className = "msg err"; }
+async function submitAtt() {
+  $("msg").className = "msg";
+  const name = $("fullName").value.trim().replace(/\s+/g, " ");
+  const data = { fullName: name, institution: $("institution").value.trim(), mobile: $("mobile").value.trim(), email: $("email").value.trim(),
+    // kept with the attendance record, same as the MS Form
+    answers: { "Date": when(JOB), "Activity": activity(JOB), "Title of Presentation": JOB.title, "Facilitator/Trainor": JOB.trainors.join(", ") } };
+  if (name.split(" ").length < 2) return showErr("Please enter your full name (first and last name).");
+  if (!data.institution) return showErr("Please enter your institution or company.");
+  if (CONFIG.requirePhone && !data.mobile) return showErr("Please enter your phone number.");
+  if (CONFIG.requireEmail && !data.email) return showErr("Please enter your email address.");
+  if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) return showErr("Please check your email address.");
+  const btn = $("submitBtn"); btn.disabled = true; btn.textContent = "Submitting…";
+  try {
+    const res = await api({ api: "attend", code: CODE, data: data });
+    if (!res.ok) throw new Error(res.error || "Something went wrong.");
+    $("formCard").classList.add("hidden");
+    $("doneTitle").textContent = "Thank you, " + res.name + "!";
+    $("doneSub").textContent = res.updated ? "Your attendance was updated." : "You're signed in. Enjoy the session!";
+    $("doneCard").classList.remove("hidden");
+    window.scrollTo(0, 0);
+  } catch (e) {
+    showErr(e.message || "We couldn't reach the server. Please check your connection and try again.");
+  } finally { btn.disabled = false; btn.textContent = "Submit"; }
+}
+
+(async function init() {
+  if (!CODE) return fatal("This link is missing its code. Please scan the QR code from the RainPhil specialist again.");
+  if (CONFIG.webAppUrl.indexOf("http") !== 0) return fatal("This page isn't set up yet (Web App URL missing).");
+  try {
+    const res = await api({ api: "job", code: CODE }, "GET");
+    if (!res.ok) return fatal(res.error);
+    JOB = res.job; render();
+  } catch (e) { fatal("We couldn't load this session. Please check your connection and refresh."); }
+})();
+</script>
+</body>
+</html>
