@@ -121,7 +121,7 @@ const CONFIG = {
     <div id="findBox">
       <input type="text" id="nameQ" placeholder="e.g. JUAN DELA CRUZ" autocomplete="name" oninput="queueLookup()">
       <div id="matches"></div>
-      <button class="btn ghost" style="margin-top:12px;" onclick="showManual()">I didn't sign the attendance</button>
+      <button class="btn ghost" style="margin-top:12px;" onclick="showManual()">I didn't sign the attendance — add me</button>
     </div>
     <div id="picked" class="hidden"></div>
     <div id="manual" class="hidden">
@@ -271,6 +271,7 @@ async function submitFb() {
     if (!res.ok) throw new Error(res.error || "Something went wrong.");
     ["whoCard", "rateCard", "moreCard"].forEach(id => $(id).classList.add("hidden"));
     if (res.updated) $("doneSub").textContent = "Your earlier answers were updated.";
+    if (res.addedToAttendance) $("doneSub").textContent = "Thank you! You've also been added to the attendance, so you'll be included in the certificates.";
     $("doneCard").classList.remove("hidden"); window.scrollTo(0, 0);
   } catch (e) {
     showErr(e.message || "We couldn't reach the server. Please check your connection and try again.");
