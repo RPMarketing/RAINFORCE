@@ -291,12 +291,12 @@ async function showPicker() {
       style="text-transform:uppercase;letter-spacing:.15em;font-weight:800;" onkeydown="if(event.key==='Enter')openCode(this.value)">
       <button class="btn" style="width:auto;margin:0;padding:0 20px;" onclick="openCode($('codeIn').value)">Go</button></div>`;
   try {
-    const res = await api({ api: "sessions", days: 7 }, "GET");
+    const res = await api({ api: "sessions", days: 45 }, "GET");
     const list = res.ok ? res.sessions : [];
     $("sessList").innerHTML = list.length ? list.map(x => `<div class="match" onclick="openCode('${esc(x.code)}')">
         <div><strong>${esc(x.title)}</strong><br><small>${esc([x.institution, fmtDate(x.date), x.time].filter(Boolean).join(" · "))}</small></div>
         <span class="pill">Open →</span></div>`).join("")
-      : `<p class="sub">No sessions are listed for ${7 ? "the past week" : "today"}. Please type the code instead.</p>`;
+      : `<p class="sub">No sessions are listed for ${45 ? "the past 45 days" : "today"}. Please type the code instead.</p>`;
   } catch (e) { $("sessList").innerHTML = '<p class="sub">Couldn\'t load the sessions. Please type the code instead.</p>'; }
 }
 
