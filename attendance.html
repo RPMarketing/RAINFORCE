@@ -133,7 +133,7 @@ let JOB = null;
 function fmtDate(iso) { return iso ? new Date(iso + "T00:00:00").toLocaleDateString("en-PH", { month: "long", day: "numeric", year: "numeric" }) : ""; }
 function when(j) { return fmtDate(j.date) + (j.endDate && j.endDate !== j.date ? " – " + fmtDate(j.endDate) : ""); }
 function activity(j) {   // only the activities the MS Form lists
-  const map = { Presentation: "Product Presentation", Demonstration: "Demonstration", Training: "Training" };
+  const map = { Presentation: "Product Presentation", Demonstration: "Demonstration", Training: "Training", Meeting: "Meeting" };
   const a = String(j.jobType || "").split(/\s*,\s*/).map(t => map[t]).filter(Boolean);
   return a.length ? a.join(", ") : String(j.jobType || "");
 }
