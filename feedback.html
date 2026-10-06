@@ -1,316 +1,1632 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Feedback · RainPhil Applications</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
-<style>:root{--navy:#0a1930;--navy2:#13284a;--brass:#cda144;--brass2:#e3c27a;--bg:#f4f1ea;--card:#fff;--ink:#1c2433;--mute:#6b7385;--line:#e4dfd3;--ok:#1f7a4d;--bad:#b3261e}
-*{box-sizing:border-box}
-html,body{margin:0}
-body{font-family:Manrope,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);font-size:15.5px;line-height:1.5;padding-bottom:env(safe-area-inset-bottom,0px)}
-.hero{background:var(--navy);color:#fff;padding:calc(28px + env(safe-area-inset-top,0px)) 20px 70px;text-align:center;border-bottom:4px solid var(--brass)}
-.brand{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--brass2);font-weight:700}
-.hero h1{margin:10px auto 6px;font-size:clamp(22px,5vw,30px);line-height:1.25;max-width:640px}
-.meta{color:#c9d2e3;font-size:14px;max-width:640px;margin:0 auto}
-.meta span{display:inline-block;margin:2px 8px}
-.wrap{max-width:640px;margin:-48px auto 30px;padding:0 14px}
-.card{background:var(--card);border-radius:16px;box-shadow:0 8px 30px rgba(10,25,48,.10);padding:22px 20px;margin-bottom:16px}
-.card h2{margin:0 0 4px;font-size:18px;color:var(--navy)}
-.card .sub{color:var(--mute);font-size:13.5px;margin:0 0 14px}
-label{display:block;font-weight:700;font-size:13.5px;margin:14px 0 6px;color:var(--navy2)}
-label .req{color:var(--bad)}
-input[type=text],input[type=email],input[type=tel],select,textarea{width:100%;padding:12px 13px;border:1.5px solid var(--line);border-radius:10px;font:inherit;background:#fff;color:var(--ink)}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--brass)}
-textarea{min-height:90px;resize:vertical}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
-@media(max-width:520px){.row{grid-template-columns:1fr}}
-.choices{display:flex;flex-wrap:wrap;gap:8px}
-.choices label{margin:0;font-weight:600;display:flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;cursor:pointer}
-.choices input{accent-color:var(--navy)}
-.choices label:has(input:checked){border-color:var(--brass);background:#fbf6ea}
-.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
-.scale button{border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:10px 0 6px;font:inherit;font-weight:800;color:var(--navy);cursor:pointer}
-.scale button small{display:block;font-size:10px;font-weight:600;color:var(--mute);line-height:1.2;margin-top:2px}
-.scale button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
-.scale button.on small{color:var(--brass2)}
-.q{padding:12px 0;border-top:1px solid var(--line)}
-.q:first-of-type{border-top:0}
-.q .qt{font-weight:700;font-size:14px;margin-bottom:8px}
-.btn{display:block;width:100%;border:0;border-radius:12px;padding:15px;font:inherit;font-weight:800;font-size:16px;background:var(--navy);color:#fff;cursor:pointer;margin-top:18px}
-.btn:disabled{opacity:.55;cursor:wait}
-.btn.ghost{background:transparent;color:var(--navy);border:1.5px solid var(--line);font-size:14px;padding:11px}
-.msg{padding:12px 14px;border-radius:10px;font-size:14px;margin-top:14px;display:none}
-.msg.err{display:block;background:#fdecea;color:var(--bad)}
-.done{text-align:center;padding:34px 20px}
-.done .tick{width:64px;height:64px;border-radius:50%;background:var(--ok);color:#fff;font-size:34px;line-height:64px;margin:0 auto 12px}
-.match{border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:8px;cursor:pointer;display:flex;justify-content:space-between;gap:10px;align-items:center}
-.match.on{border-color:var(--brass);background:#fbf6ea}
-.match small{color:var(--mute)}
-.pill{font-size:11px;font-weight:700;background:#e9eef7;color:var(--navy2);padding:3px 8px;border-radius:999px;white-space:nowrap}
-.trainor{background:#f8f6f0;border-radius:12px;padding:6px 14px 10px;margin-top:12px}
-.trainor h3{margin:10px 0 2px;font-size:15px;color:var(--navy)}
-.foot{text-align:center;color:var(--mute);font-size:12px;margin:10px 0 30px}
-.hidden{display:none!important}
-.loading{text-align:center;color:var(--mute);padding:40px 0}
-.info{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14px;background:#f8f6f0;border-radius:12px;padding:14px 16px;margin-bottom:6px}
-.info dt{color:var(--mute);font-weight:600}.info dd{margin:0;font-weight:700;color:var(--navy)}
-.hint{font-size:12px;color:var(--mute);font-weight:600;margin-top:-2px;margin-bottom:6px}
-.stars{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
-.stars button{background:none;border:0;padding:2px;font-size:32px;line-height:1;color:#d9d3c4;cursor:pointer;transition:transform .1s}
-.stars button.on{color:var(--brass)}
-.stars button:active{transform:scale(1.15)}
-.stars .lbl{font-size:12.5px;font-weight:700;color:var(--navy2);margin-left:8px;min-width:110px}
-.who{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#fbf6ea;border:1.5px solid var(--brass);border-radius:12px;padding:12px 14px;margin-top:10px}
-.who small{color:var(--mute)}
-.linkbtn{background:none;border:0;color:var(--navy2);font:inherit;font-weight:700;text-decoration:underline;cursor:pointer;font-size:13px}
-</style>
-</head>
-<body>
-<!--
-  RainForce · Applications — FEEDBACK PAGE
-  Link: https://rpmarketing.github.io/RainForceApps/feedback/?c=ABC123
-  Like Rainlink: participants type their name, pick it from the attendance list and their details
-  are filled in. Date, Activity, Title and Trainor come from the job.
-  Stars: 1 = Strongly Disagree … 5 = Strongly Agree.
--->
-<script>
-const CONFIG = {
-  webAppUrl: "https://script.google.com/macros/s/AKfycbyLXxJpnwoAc0rHIJP6KR_CHqQMlkYp-IuiThvY2ThVAAW0cHktB8-5XJQaRK8NtlJBDQ/exec",   // same URL as the attendance page
-  company: "RainPhil Inc. · Applications",
-  SCALE: ["Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"],   // 1 → 5 stars
-  // Rated once for the session
-  STATEMENTS: [
-    "The objectives of the training were clearly defined.",
-    "Participation and interaction were encouraged.",
-    "The topics covered were relevant to me.",
-    "The content was organized and easy to follow.",
-    "The materials distributed were helpful.",
-    "This training experience will be useful in my work.",
-    "The training objectives were met.",
-    "The time allotted for the training was sufficient.",
-    "The meeting room and facilities were adequate and comfortable."
-  ],
-  // Rated for each trainor on the job (one set if there's only one trainor)
-  TRAINER_STATEMENTS: [
-    "The trainer was knowledgeable about the training topics.",
-    "The trainer was well prepared."
-  ],
-  QUESTIONS: [
-    "What did you like most about this training?",
-    "What aspects of the training could be improved?",
-    "How do you hope to change your practice as a result of this training?",
-    "What additional training would you like to have in the future?"
-  ],
-  commentsLabel: "Please share other comments here."
+/**
+ * RainForce (RainPhil Inc.) — APPLICATION REQUEST MODULE
+ * ------------------------------------------------------------------
+ * Add this as a NEW script file (Apps Script editor ▸ + ▸ Script ▸ name it
+ * "AppsRequests"). It shares Code.gs and ServiceRequests.gs helpers
+ * (getRows, updateRow, emailShell, srDateFromInput, srEnsureColumn …) and adds:
+ *   AppsRequests   — one row per application job
+ *   AppsAttendance — sign-ins from the GitHub attendance page
+ *   AppsFeedback   — answers from the GitHub feedback page
+ * plus "AppsRole" and "AppsTeam" columns on the Users tab.
+ *
+ * Applications roles (set per user from the Users page):
+ *   Lead       — assigns jobs for their team (Carmina = Chemistry, Denise = Biology)
+ *   Specialist — does the jobs (anyone in the Applications department counts too)
+ *   CertMaker  — makes the certificates and training agendas (Carlo)
+ * The Applications Manager (and Admin) see every team and the overall monthly report.
+ *
+ * Status flow:
+ *   Submitted → Scheduled → InProgress → Completed
+ *             ↘ (a specialist named by Sales can take it: "I'm handling this")
+ *   InProgress/Scheduled → ForContinuation (handed back to the lead) → Scheduled …
+ *   Certificates are tracked separately: CertStatus = None | ToSend | Pending | Done
+ * Turnaround = first agreed date (or the day work started, if earlier) → job done.
+ */
+
+const AR_SHEET = "AppsRequests";
+const AR_ATT_SHEET = "AppsAttendance";
+const AR_FB_SHEET = "AppsFeedback";
+const AR_TYPES = ["Presentation", "Demonstration", "Training", "Troubleshooting", "Site Visit", "Proof of Concept", "Remote Support"];
+const AR_REPORT_TYPES = ["Troubleshooting", "Remote Support"];   // only these get a job report
+const AR_TEAMS = ["Chemistry", "Biology"];
+const AR_PAYMENT = ["Paid", "Free"];
+const AR_ROLES = ["Lead", "Specialist", "CertMaker"];
+const AR_CERTS = [
+  { key: "Appearance", label: "Certificate of Appearance", needsNames: true, namesFrom: "specialists" },
+  { key: "TrainingCert", label: "Training Certificate", needsNames: true, namesFrom: "attendance" },
+  { key: "Agenda", label: "Training Agenda", needsNames: false },
+];
+const AR_TODO_CATS = ["Reagents", "Machines", "Worksheet", "Consumables", "Documents", "Others"];
+const AR_PENDING_REASONS = ["Client request", "Waiting for samples", "Waiting for reagents", "Machine not ready", "Specialist unavailable", "Other"];
+const AR_STATUS_LABEL = {
+  Submitted: "Awaiting Assignment", Scheduled: "Scheduled", InProgress: "In Progress",
+  ForContinuation: "For Continuation", Completed: "Job Done", Cancelled: "Cancelled",
 };
-</script>
+const AR_HEADERS = ["RequestID", "DateRequested", "RequestorUsername", "RequestorName", "RequestorEmail", "RequestorDept",
+  "AccountName", "AccountEmail", "JobType", "Team", "PaymentType", "Institution", "ClientDepartment", "Address",
+  "ContactPerson", "ContactNumber", "ContactEmail", "ClientRequestDate", "PreferredDate", "DateFlexible", "Topic",
+  "ProductsJSON", "Notes", "ProposedUsername", "ProposedName", "Status", "SpecialistUsername", "SpecialistName",
+  "SpecialistEmail", "TeamJSON", "AssignedByName", "DateAssigned", "FirstScheduledDate", "ScheduledDate", "ScheduledTime",
+  "EndDate", "AssignNote", "StartedDate", "SessionsJSON", "ReportJSON", "TodoJSON", "CertsJSON", "CertInfoJSON",
+  "CertStatus", "DateCertsDone", "AttendanceCode", "HistoryJSON", "DateJobDone", "CompletionNote", "CancelReason",
+  "PendingReason", "ContinuationCount", "RemindersJSON", "PocJSON", "Source", "LinkedID", "SummaryJSON", "LeadInterest"];
+const AR_ATT_HEADERS = ["AttendeeID", "Timestamp", "RequestID", "Code", "FullName", "FirstName", "LastName", "Email",
+  "Mobile", "Institution", "Department", "Position", "AnswersJSON", "AddedVia", "FeedbackRemindedAt", "FeedbackReminders"];
+const AR_FB_HEADERS = ["FeedbackID", "Timestamp", "RequestID", "Code", "AttendeeID", "FullName", "Email", "Institution",
+  "RatingsJSON", "TrainorRatingsJSON", "AnswersJSON", "Comments", "AvgScore"];
 
-<div class="hero">
-  <div class="brand" id="brand"></div>
-  <h1 id="title">Feedback</h1>
-  <div class="meta" id="meta"></div>
-</div>
-<div class="wrap">
-  <div class="card" id="loading"><div class="loading">Loading…</div></div>
-
-  <div class="card hidden" id="whoCard">
-    <h2>Your details</h2>
-    <p class="sub">Type your name as you wrote it in the attendance, then tap it — your details fill in automatically.</p>
-    <div id="findBox">
-      <input type="text" id="nameQ" placeholder="e.g. JUAN DELA CRUZ" autocomplete="name" oninput="queueLookup()">
-      <div id="matches"></div>
-      <button class="btn ghost" style="margin-top:12px;" onclick="showManual()">I didn't sign the attendance — add me</button>
-    </div>
-    <div id="picked" class="hidden"></div>
-    <div id="manual" class="hidden">
-      <label>Full Name <span class="req">*</span></label><div class="hint">e.g. JUAN DELA CRUZ</div><input type="text" id="mName">
-      <label>Institution / Company Affiliated <span class="req">*</span></label><div class="hint">e.g. RAINPHIL, INC.</div><input type="text" id="mInst">
-      <div class="row">
-        <div><label>Phone Number</label><input type="tel" id="mPhone" inputmode="tel"></div>
-        <div><label>Email Address</label><input type="email" id="mEmail"></div>
-      </div>
-      <button class="linkbtn" style="margin-top:10px;" onclick="showFind()">← Find my name instead</button>
-    </div>
-    <dl class="info" id="info" style="margin-top:16px;"></dl>
-  </div>
-
-  <div class="card hidden" id="rateCard">
-    <h2>Your level of agreement</h2>
-    <p class="sub">1 star = Strongly Disagree · 5 stars = Strongly Agree</p>
-    <div id="statements"></div>
-    <div id="trainers"></div>
-  </div>
-
-  <div class="card hidden" id="moreCard">
-    <h2>Tell us more</h2>
-    <div id="questions"></div>
-    <label id="cmtLabel"></label><textarea id="comments"></textarea>
-    <div class="msg" id="msg"></div>
-    <button class="btn" id="submitBtn" onclick="submitFb()">Submit</button>
-  </div>
-
-  <div class="card done hidden" id="doneCard">
-    <div class="tick">✓</div>
-    <h2>Thank you!</h2>
-    <p class="sub" id="doneSub">Your feedback helps us improve our trainings and demos.</p>
-  </div>
-  <div class="foot" id="foot"></div>
-</div>
-
-<script>
-const $ = id => document.getElementById(id);
-const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const CODE = (new URLSearchParams(location.search).get("c") || "").trim().toUpperCase();
-let JOB = null, PICK = null, MANUAL = false, lookupTimer = null, lookupSeq = 0, MATCHES = [];
-const RATE = { event: {}, trainor: {} };
-
-function fmtDate(iso) { return iso ? new Date(iso + "T00:00:00").toLocaleDateString("en-PH", { month: "long", day: "numeric", year: "numeric" }) : ""; }
-function when(j) { return fmtDate(j.date) + (j.endDate && j.endDate !== j.date ? " – " + fmtDate(j.endDate) : ""); }
-function activity(j) {
-  const map = { Presentation: "Product Presentation", Demonstration: "Demonstration", Training: "Training" };
-  const a = String(j.jobType || "").split(/\s*,\s*/).map(t => map[t]).filter(Boolean);
-  return a.length ? a.join(", ") : String(j.jobType || "");
+// ---------------------------------------------------------------------------
+// SETUP — called from setupSpreadsheet(). Safe to re-run.
+// ---------------------------------------------------------------------------
+const AR_SCHEMA_VERSION = "6";   // 2: Proof of Concept form · 3: service training rows · 4: visit summary
+function setupAppsModule() {
+  [[AR_SHEET, AR_HEADERS], [AR_ATT_SHEET, AR_ATT_HEADERS], [AR_FB_SHEET, AR_FB_HEADERS]].forEach(pair => {
+    const name = pair[0], headers = pair[1];
+    let sh = SS.getSheetByName(name);
+    if (!sh) sh = SS.insertSheet(name);
+    headers.forEach(h => srEnsureColumn(name, h));
+    sh.getRange(1, 1, 1, sh.getLastColumn()).setFontWeight("bold").setBackground("#0a1930").setFontColor("#ffffff");
+    sh.setFrozenRows(1);
+  });
+  setDropdown("Users", srColLetter(srEnsureColumn("Users", "AppsRole")), AR_ROLES);
+  setDropdown("Users", srColLetter(srEnsureColumn("Users", "AppsTeam")), AR_TEAMS);
+  // Where the two GitHub Pages live (change in the Config tab if your repo is named differently)
+  seedConfig("APPS_ATTENDANCE_URL", "https://rpmarketing.github.io/RAINFORCE/attendance.html");
+  seedConfig("APPS_FEEDBACK_URL", "https://rpmarketing.github.io/RAINFORCE/feedback.html");
+  seedConfig("AR_UnassignedRemindDays", 2);
+  seedConfig("AR_CertRemindDays", 3);
+  SpreadsheetApp.flush();
+  PropertiesService.getScriptProperties().setProperty("AR_SCHEMA", AR_SCHEMA_VERSION);
+  Logger.log("Application Request module ready.");
 }
-function fatal(text) { $("loading").innerHTML = '<div class="loading">' + esc(text) + "</div>"; }
-async function api(payload, method) {
-  if (method === "GET") return (await fetch(CONFIG.webAppUrl + "?" + new URLSearchParams(payload).toString())).json();
-  return (await fetch(CONFIG.webAppUrl, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) })).json();
+function arEnsureReady() {
+  const props = PropertiesService.getScriptProperties();
+  if (SS.getSheetByName(AR_SHEET) && SS.getSheetByName(AR_ATT_SHEET) && SS.getSheetByName(AR_FB_SHEET) &&
+      props.getProperty("AR_SCHEMA") === AR_SCHEMA_VERSION) return;
+  setupAppsModule();   // no lock here: callers may already hold the script lock
 }
 
-/* ---- star ratings ---- */
-function starsHtml(group, key) {
-  return `<div class="stars" data-g="${esc(group)}" data-k="${esc(key)}">${CONFIG.SCALE.map((l, i) =>
-    `<button type="button" aria-label="${esc(l)}" title="${esc(l)}" onclick="rate(this,${i + 1})">★</button>`).join("")}<span class="lbl"></span></div>`;
+// ---------------------------------------------------------------------------
+// Who's who
+// ---------------------------------------------------------------------------
+function arUser(session) {
+  arEnsureReady();
+  if (!session || !session.username) throw new Error("Not logged in.");
+  const u = getRows(SHEETS.USERS).find(x => x.Username === session.username && srActive(x));
+  if (!u) throw new Error("Your account wasn't found or is inactive.");
+  return u;
 }
-function rate(btn, v) {
-  const box = btn.parentNode, g = box.dataset.g, k = box.dataset.k;
-  box.querySelectorAll("button").forEach((b, i) => b.classList.toggle("on", i < v));
-  box.querySelector(".lbl").textContent = CONFIG.SCALE[v - 1];
-  if (g === "__event") RATE.event[k] = v; else (RATE.trainor[g] = RATE.trainor[g] || {})[k] = v;
+/** Lead / Specialist / CertMaker. Anyone in the Applications department is a Specialist unless set otherwise. */
+function arRoleOf(u) {
+  if (AR_ROLES.indexOf(u.AppsRole) !== -1) return u.AppsRole;
+  if (u.Department === "Applications" && u.Role !== "ApplicationsManager") return "Specialist";
+  return "";
 }
+function arIsHead(u) { return u.Role === "Admin" || u.Role === "ApplicationsManager"; }
+function arIsLead(u) { return arRoleOf(u) === "Lead"; }
+function arCanManageTeam(u, team) { return arIsHead(u) || (arIsLead(u) && u.AppsTeam === team); }
+function arIsManager(u) { return arIsHead(u) || arIsLead(u); }
+function arIsSpecialist(u) { const r = arRoleOf(u); return r === "Specialist" || r === "Lead"; }
+function arIsCertMaker(u) { return u.AppsRole === "CertMaker" || u.Role === "Admin"; }
+function arActiveUsers() { return getRows(SHEETS.USERS).filter(srActive); }
+function arSpecialists() {
+  return arActiveUsers().filter(arIsSpecialist).map(x => ({ username: x.Username, name: x.FullName, email: x.Email, team: x.AppsTeam || "" }));
+}
+/** The lead(s) of a team — the only ones who get that team's emails.
+ *  If no lead is set yet: Biology → Admin (Denise), Chemistry → Applications Manager (Carmina). */
+function arLeadUsers(team) {
+  const users = arActiveUsers();
+  const leads = users.filter(x => x.AppsRole === "Lead" && x.AppsTeam === team);
+  if (leads.length) return leads;
+  const fallbackRole = team === "Biology" ? "Admin" : "ApplicationsManager";
+  return users.filter(x => x.Role === fallbackRole);
+}
+function arLeadEmails(team) { return arLeadUsers(team).map(x => x.Email).filter(Boolean); }
+function arLeadName(team) { const l = arLeadUsers(team)[0]; return l ? callName(l) : "the Applications lead"; }
+function arCertMakers() { return arActiveUsers().filter(x => x.AppsRole === "CertMaker"); }
+function arCertMakerName() { const c = arCertMakers()[0]; return c ? callName(c) : "the certificate maker"; }
+function arFindUser(username) { return arActiveUsers().find(x => x.Username === username); }
 
-/* ---- find your name (from the attendance), like Rainlink ---- */
-function queueLookup() { clearTimeout(lookupTimer); lookupTimer = setTimeout(lookup, 350); }
-async function lookup() {
-  const q = $("nameQ").value.trim(), seq = ++lookupSeq;
-  if (q.replace(/[^a-z]/gi, "").length < 3) { $("matches").innerHTML = ""; return; }
-  $("matches").innerHTML = '<p class="sub" style="margin:10px 0 0;">Searching…</p>';
-  try {
-    const res = await api({ api: "lookup", code: CODE, name: q }, "GET");
-    if (seq !== lookupSeq) return;
-    if (!res.ok) { $("matches").innerHTML = `<p class="sub" style="margin:10px 0 0;">${esc(res.error)}</p>`; return; }
-    MATCHES = res.matches;
-    if (!MATCHES.length) { $("matches").innerHTML = '<p class="sub" style="margin:10px 0 0;">No match yet — check the spelling, or tap "I didn\'t sign the attendance".</p>'; return; }
-    $("matches").innerHTML = MATCHES.map((m, i) => `<div class="match" onclick="pick(${i})">
-      <div><strong>${esc(m.name)}</strong><br><small>${esc([m.institution, m.email].filter(Boolean).join(" · "))}</small></div>
-      ${m.answered ? '<span class="pill">Answered — tap to update</span>' : ""}</div>`).join("");
-  } catch (e) { $("matches").innerHTML = '<p class="sub" style="margin:10px 0 0;">Couldn\'t search right now. Try again in a moment.</p>'; }
+// ---------------------------------------------------------------------------
+// Row helpers
+// ---------------------------------------------------------------------------
+function arGet(id) {
+  const r = findRow(AR_SHEET, "RequestID", id);
+  if (!r) throw new Error("Application request " + id + " was not found.");
+  return r;
 }
-function pick(i) {
-  PICK = MATCHES[i]; MANUAL = false;
-  $("findBox").classList.add("hidden"); $("manual").classList.add("hidden");
-  $("picked").innerHTML = `<div class="who"><div><strong>${esc(PICK.name)}</strong><br><small>${esc([PICK.institution, PICK.email].filter(Boolean).join(" · "))}</small></div>
-    <button class="linkbtn" onclick="showFind()">Not you?</button></div>`;
-  $("picked").classList.remove("hidden"); revealRest();
+/** Fields that other records copy (certificate details, RAINLAB booking). Changing any of them flows through automatically. */
+const AR_FOLLOW_FIELDS = ["ScheduledDate", "EndDate", "Institution", "Address", "SpecialistName", "TeamJSON"];
+function arUpdate(id, updates) {
+  const follow = updates && AR_FOLLOW_FIELDS.some(k => k in updates);
+  const before = follow ? findRow(AR_SHEET, "RequestID", id) : null;
+  updateRow(AR_SHEET, "RequestID", id, updates);
+  if (before) { try { arPropagate(before, id, updates.__by || ""); } catch (e) { Logger.log("AR propagate " + id + ": " + e); } }
 }
-function showManual() {
-  PICK = null; MANUAL = true;
-  $("findBox").classList.add("hidden"); $("picked").classList.add("hidden"); $("manual").classList.remove("hidden");
-  if (!$("mName").value) $("mName").value = $("nameQ").value;
-  if (!$("mInst").value) $("mInst").value = JOB.institution || "";
-  revealRest();
+/** The values a job's certificate details start from (same defaults as the Certificates form). */
+function arCertDefaults(r) {
+  const iso = v => v ? srIsoDate(stripTime(new Date(v))) : "";
+  return { date: iso(r.ScheduledDate), endDate: iso(r.EndDate), institution: String(r.Institution || ""),
+    venue: String(r.Address || r.Institution || ""), trainor: [r.SpecialistName].concat(srJson(r.TeamJSON, []).map(t => t.name)).filter(Boolean).join(", ") };
 }
-function showFind() {
-  PICK = null; MANUAL = false;
-  $("picked").classList.add("hidden"); $("manual").classList.add("hidden"); $("findBox").classList.remove("hidden");
-  $("nameQ").focus();
-}
-function revealRest() { $("rateCard").classList.remove("hidden"); $("moreCard").classList.remove("hidden"); }
-
-function render() {
-  $("brand").textContent = CONFIG.company;
-  $("title").textContent = JOB.title || "Feedback";
-  document.title = "Feedback · " + (JOB.title || "RainPhil");
-  $("meta").innerHTML = [JOB.institution, when(JOB)].filter(Boolean).map(x => "<span>" + esc(x) + "</span>").join("·");
-  $("info").innerHTML = [["Date", when(JOB)], ["Activity", activity(JOB)], ["Title", JOB.title], ["Facilitator / Trainor", JOB.trainors.join(", ")]]
-    .filter(p => p[1]).map(p => `<dt>${esc(p[0])}</dt><dd>${esc(p[1])}</dd>`).join("");
-  $("statements").innerHTML = CONFIG.STATEMENTS.map(q => `<div class="q"><div class="qt">${esc(q)}</div>${starsHtml("__event", q)}</div>`).join("");
-  const many = JOB.trainors.length > 1;
-  $("trainers").innerHTML = JOB.trainors.map(t => `<div class="trainor">${many ? `<h3>${esc(t)}</h3>` : ""}${CONFIG.TRAINER_STATEMENTS.map(c =>
-    `<div class="q"><div class="qt">${esc(many ? c.replace(/^The trainer/, t) : c)}</div>${starsHtml(t, c)}</div>`).join("")}</div>`).join("");
-  $("questions").innerHTML = CONFIG.QUESTIONS.map((q, i) => `<label>${esc(q)}</label><textarea id="q${i}"></textarea>`).join("");
-  $("cmtLabel").textContent = CONFIG.commentsLabel;
-  $("foot").textContent = "Ref. " + JOB.requestId;
-  $("loading").classList.add("hidden"); $("whoCard").classList.remove("hidden");
-}
-
-function showErr(t) { const m = $("msg"); m.textContent = t; m.className = "msg err"; }
-async function submitFb() {
-  $("msg").className = "msg";
-  if (!PICK && !MANUAL) return showErr("Please find your name first (top of the page).");
-  const data = { ratings: RATE.event, trainorRatings: RATE.trainor, answers: {}, comments: $("comments").value.trim() };
-  if (PICK) data.attendeeId = PICK.id;
-  else {
-    data.fullName = $("mName").value.trim(); data.institution = $("mInst").value.trim(); data.email = $("mEmail").value.trim();
-    if (data.fullName.split(/\s+/).length < 2) return showErr("Please type your full name.");
-    if (!data.institution) return showErr("Please type your institution or company.");
-    if ($("mPhone").value.trim()) data.answers["Phone Number"] = $("mPhone").value.trim();
+/**
+ * After a job's date, client, venue or people change: update everything that copied them.
+ *  • Certificate details — each field that still matched the old value (or was blank) takes the new one;
+ *    anything the specialist typed differently is kept. Certificates already with Carlo, or done,
+ *    go back to him marked "(updated)" and he's emailed what changed.
+ *  • The linked RAINLAB booking's client name.
+ */
+function arPropagate(before, id, byName) {
+  const after = findRow(AR_SHEET, "RequestID", id); if (!after) return;
+  const oldD = arCertDefaults(before), newD = arCertDefaults(after);
+  const info = srJson(after.CertInfoJSON, {}), certs = arCertsOf(after);
+  const hasInfo = Object.keys(info).length > 0;
+  const changes = [];
+  if (hasInfo) {
+    Object.keys(newD).forEach(k => {
+      if (oldD[k] === newD[k]) return;
+      const cur = String(info[k] || "");
+      if (cur === "" ? k !== "endDate" || newD[k] : cur === oldD[k]) {
+        changes.push({ field: k, old: cur, now: newD[k] });
+        info[k] = newD[k];
+      }
+    });
   }
-  const miss = CONFIG.STATEMENTS.find(q => !RATE.event[q]);
-  if (miss) return showErr("Please rate: " + miss);
-  for (const t of JOB.trainors) {
-    const m = CONFIG.TRAINER_STATEMENTS.find(c => !(RATE.trainor[t] || {})[c]);
-    if (m) return showErr("Please rate: " + (JOB.trainors.length > 1 ? m.replace(/^The trainer/, t) : m));
+  if (changes.length) {
+    const reopen = AR_CERTS.filter(c => certs[c.key] && certs[c.key].needed && (certs[c.key].state === "Pending" || certs[c.key].state === "Done"));
+    reopen.forEach(c => { certs[c.key] = Object.assign(certs[c.key], { state: "Pending", resent: true, doneAt: "", doneBy: "", sentAt: new Date().toISOString() }); });
+    const label = { date: "Date", endDate: "Until", institution: "Institution", venue: "Venue", trainor: "Trainor" };
+    const note = changes.map(c => label[c.field] + ": " + (c.old || "—") + " → " + (c.now || "—")).join("; ");
+    const status = arCertStatus(certs);
+    updateRow(AR_SHEET, "RequestID", id, { CertInfoJSON: JSON.stringify(info), CertsJSON: JSON.stringify(certs), CertStatus: status,
+      DateCertsDone: status === "Done" ? (after.DateCertsDone || new Date()) : "",
+      HistoryJSON: srHistory(after, byName || "RainForce", "Certificate details updated automatically", note) });
+    try {
+      const log = SS.getSheetByName("ChangeLog");
+      if (log) changes.forEach(c => log.appendRow([new Date(), arIsSvc(after) ? "Service" : "Apps", id, "Certificate · " + label[c.field], c.old, c.now, byName || "RainForce", "Followed the job's change"]));
+    } catch (e) { /* log is optional */ }
+    if (reopen.length) arNotifyCertChanged(findRow(AR_SHEET, "RequestID", id), reopen, changes, label);
   }
-  CONFIG.QUESTIONS.forEach((q, i) => { const v = $("q" + i).value.trim(); if (v) data.answers[q] = v; });
-  const btn = $("submitBtn"); btn.disabled = true; btn.textContent = "Submitting…";
+  // RAINLAB booking made from this job shows the client too
+  if (before.Institution !== after.Institution && typeof RL_SHEET !== "undefined" && SS.getSheetByName(RL_SHEET)) {
+    getRows(RL_SHEET).filter(b => b.LinkedID === id && b.Institution === before.Institution)
+      .forEach(b => updateRow(RL_SHEET, "BookingID", b.BookingID, { Institution: after.Institution }));
+  }
+}
+function arNotifyCertChanged(row, list, changes, label) {
+  const makers = arCertMakers().map(x => x.Email).filter(Boolean);
+  if (!makers.length) return;
+  const lines = changes.map(c => `<li><strong>${escHtml(label[c.field])}:</strong> <span style="text-decoration:line-through;color:#9ca3af;">${escHtml(c.old || "—")}</span> → <strong>${escHtml(c.now || "—")}</strong></li>`).join("");
+  arMail(row, {
+    to: makers, cc: arJobEmails(row),
+    subject: "Certificate details changed: " + arTag(row),
+    banner: "✏️ Certificate details changed", color: "#92400e", bg: "#fef3c7",
+    intro: "The job's details changed, so these certificate details were updated:<ul style=\"margin:8px 0;padding-left:18px;\">" + lines + "</ul>" +
+      "Please make (or re-issue) the " + list.map(c => c.label).join(", ") + " with the new details.",
+    introPlain: "Certificate details changed: " + changes.map(c => label[c.field] + " " + (c.old || "—") + " → " + (c.now || "—")).join("; "),
+    next: "Open <strong>Certificates</strong> — the request is back in your queue marked (updated).",
+  });
+}
+function arTypesOf(row) { return String((row && row.JobType) || "").split(/\s*,\s*/).filter(Boolean); }
+function arNeedsReport(row) { return arTypesOf(row).some(t => AR_REPORT_TYPES.indexOf(t) !== -1); }
+function arRemoteOnly(types) { return types.length > 0 && types.every(t => t === "Remote Support"); }
+function arCrew(row) { return srJson(row.TeamJSON, []); }
+function arOnJob(row, username) { return row.SpecialistUsername === username || arCrew(row).some(t => t.username === username); }
+function arJobEmails(row) { return [row.SpecialistEmail].concat(arCrew(row).map(t => t.email)).filter(Boolean); }
+function arJobNames(row) { return [row.SpecialistName].concat(arCrew(row).map(t => t.name)).filter(Boolean).join(" + "); }
+function arIsOpen(row) { return row.Status !== "Completed" && row.Status !== "Cancelled"; }
+/** Service training rows (Source = Service) belong to the Service Coordinator / Service Manager, not the Apps leads. */
+function arIsSvc(row) { return row && row.Source === "Service"; }
+function arCanManageRow(u, row) { return arIsSvc(row) ? srIsManager(u) : arCanManageTeam(u, row.Team); }
+function arRequireJobOrManager(u, row) {
+  if (arOnJob(row, u.Username) || arCanManageRow(u, row)) return;
+  throw new Error("Only the specialist on this job (or the " + row.Team + " lead) can do that.");
+}
+function arNextId() {
+  const nums = getRows(AR_SHEET).filter(r => /^AR-/.test(String(r.RequestID))).map(r => parseInt(String(r.RequestID).split("-")[1], 10)).filter(n => !isNaN(n));
+  return "AR-" + String(nextSequence("LAST_AR_ID", nums.length ? Math.max.apply(null, nums) : 0)).padStart(5, "0");
+}
+/** Short code used in the attendance / feedback links (no 0/O/1/I to avoid typos). */
+function arNewCode() {
+  const chars = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+  const used = getRows(AR_SHEET).map(r => r.AttendanceCode);
+  let code;
+  do { code = ""; for (let i = 0; i < 6; i++) code += chars.charAt(Math.floor(Math.random() * chars.length)); } while (used.indexOf(code) !== -1);
+  return code;
+}
+function arCertsOf(row) { return srJson(row.CertsJSON, {}); }
+/** None = no certificates needed · ToSend = needed but not sent to the cert maker · Pending = with the cert maker · Done */
+function arCertStatus(certs) {
+  const needed = AR_CERTS.filter(c => certs[c.key] && certs[c.key].needed);
+  if (!needed.length) return "None";
+  if (needed.some(c => !certs[c.key].state)) return "ToSend";
+  if (needed.some(c => certs[c.key].state === "Pending")) return "Pending";
+  return "Done";
+}
+/** Turnaround start: the first agreed date, or the day work actually started if that was earlier. */
+function arStartDate(row) {
+  const a = srDay(row.FirstScheduledDate), b = srDay(row.StartedDate);
+  if (a && b) return a < b ? a : b;
+  return a || b;
+}
+function arCleanStr(v, max) { return String(v == null ? "" : v).trim().slice(0, max || 500); }
+
+// ---------------------------------------------------------------------------
+// Context for the front end
+// ---------------------------------------------------------------------------
+/** GitHub page link from Config. The first draft's placeholder (RainForceApps/…/) is mapped to the live RAINFORCE pages. */
+function arPageUrl(key, page) {
+  const v = String(getConfigValue(key, "") || "").trim();
+  if (!v || /\/RainForceApps\//i.test(v)) return "https://rpmarketing.github.io/RAINFORCE/" + page + ".html";
+  return v;
+}
+function arGetContext(session) {
+  const u = arUser(session);
+  const users = arActiveUsers();
+  const leadTeams = arIsHead(u) ? AR_TEAMS.slice() : (arIsLead(u) && u.AppsTeam ? [u.AppsTeam] : []);
+  return {
+    ok: true,
+    appsRole: arRoleOf(u), appsTeam: u.AppsTeam || "",
+    isHead: arIsHead(u), isManager: leadTeams.length > 0, leadTeams: leadTeams,
+    isSpecialist: arIsSpecialist(u), isCertMaker: arIsCertMaker(u), isRealCertMaker: u.AppsRole === "CertMaker",
+    specialists: arSpecialists().map(s => ({ username: s.username, name: s.name, team: s.team })),
+    accountPeople: users.filter(x => x.Department === "Sales" || x.Role === "SalesManager" || x.Department === "Applications" || x.Role === "ApplicationsManager")
+      .map(x => ({ username: x.Username, name: x.FullName, dept: (x.Department === "Applications" || x.Role === "ApplicationsManager") ? "Applications" : "Sales" })),
+    leadNames: { Chemistry: arLeadName("Chemistry"), Biology: arLeadName("Biology") },
+    certMakerName: arCertMakerName(),
+    types: AR_TYPES, reportTypes: AR_REPORT_TYPES, teams: AR_TEAMS, payment: AR_PAYMENT,
+    certs: AR_CERTS, todoCats: AR_TODO_CATS, pendingReasons: AR_PENDING_REASONS, pocStates: AR_POC_STATES, pocHazards: AR_POC_HAZARDS,
+    sumOutcomes: AR_SUM_OUTCOMES, sumInterest: AR_SUM_INTEREST, sumNextBy: AR_SUM_NEXTBY,
+    rainlab: typeof rlRooms === "function" ? (rlEnsure(), { rooms: rlRooms(), setup: RL_SETUP, open: rlHours().open, close: rlHours().close }) : null,
+    attendanceUrl: arPageUrl("APPS_ATTENDANCE_URL", "attendance"),
+    feedbackUrl: arPageUrl("APPS_FEEDBACK_URL", "feedback"),
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Submit — Sales, Service or Applications
+// ---------------------------------------------------------------------------
+function arSubmitRequest(session, req) {
+  const u = arUser(session);
+  if (srIsLogistics(u)) throw new Error("Logistics accounts can't file application requests.");
+  const need = (v, label) => { if (!v || !String(v).trim()) throw new Error(label + " is required."); return String(v).trim(); };
+  const picked = [].concat(req.jobTypes || []).map(String);
+  const types = AR_TYPES.filter(t => picked.indexOf(t) !== -1);
+  if (!types.length) throw new Error("Choose at least one type of job.");
+  if (AR_TEAMS.indexOf(req.team) === -1) throw new Error("Choose Chemistry or Biology.");
+  if (AR_PAYMENT.indexOf(req.paymentType) === -1) throw new Error("Choose Paid or Free.");
+  const institution = typeof instCanonical === "function" ? instCanonical(need(req.institution, "Institution"), req.address, u.FullName) : need(req.institution, "Institution");
+  const remoteOnly = arRemoteOnly(types);
+  const address = remoteOnly ? arCleanStr(req.address) : need(req.address, "Address / venue");
+  const contactPerson = need(req.contactPerson, "Contact person");
+  const contactNumber = need(req.contactNumber, "Contact number");
+  const contactEmail = arCleanStr(req.contactEmail, 200);
+  if (contactEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactEmail)) throw new Error("That contact email doesn't look right.");
+  const preferred = srDateFromInput(need(req.preferredDate, "Preferred date"));
+  const clientReq = srDateFromInput(need(req.clientRequestDate, "Date the client asked"));
+  if (clientReq > stripTime(new Date())) throw new Error("The date the client asked can't be in the future.");
+  const products = (req.products || []).map(p => ({ brand: arCleanStr(p.brand, 80), model: arCleanStr(p.model, 120), qty: Math.max(1, parseInt(p.qty, 10) || 1) }))
+    .filter(p => p.brand || p.model);
+  const certs = {};
+  AR_CERTS.forEach(c => { if ((req.certs || []).indexOf(c.key) !== -1) certs[c.key] = { needed: true, state: "", names: [] }; });
+  // Proof of Concept: Sample Analysis Request Form (SLS-FM-05) sections 1–3
+  const poc = types.indexOf("Proof of Concept") !== -1 ? arCleanPoc(req.poc, true) : null;
+
+  // Account in charge: Sales filing → themselves; anyone else may name the Sales/Apps person handling the client
+  let accName = u.FullName, accEmail = u.Email;
+  if (req.accountUsername) { const a = arFindUser(req.accountUsername); if (a) { accName = a.FullName; accEmail = a.Email; } }
+
+  const selfHandle = !!req.handleMyself && arIsSpecialist(u);
+  let proposed = null;
+  if (!selfHandle && req.proposedUsername) {
+    proposed = arFindUser(req.proposedUsername);
+    if (!proposed || !arIsSpecialist(proposed)) throw new Error("The Applications specialist you picked wasn't found.");
+  }
+  if (selfHandle && !req.scheduledDate) throw new Error("Pick the date you'll do this job.");
+
+  // RAINLAB facility (Rainlab.gs): check the room is free before anything is saved
+  const wantsLab = req.rainlab && req.rainlab.use && typeof rlCheckFree === "function";
+  if (wantsLab) rlCheckFree(rlFromAppsRequest(u, Object.assign({}, req, { institution: institution }), types));
+
+  let row;
+  srWithLock(() => {
+    row = {
+      RequestID: arNextId(), DateRequested: new Date(),
+      RequestorUsername: u.Username, RequestorName: u.FullName, RequestorEmail: u.Email, RequestorDept: u.Department || (arIsSpecialist(u) ? "Applications" : ""),
+      AccountName: accName, AccountEmail: accEmail,
+      JobType: types.join(", "), Team: req.team, PaymentType: req.paymentType,
+      Institution: institution, ClientDepartment: arCleanStr(req.clientDepartment, 200), Address: address,
+      ContactPerson: contactPerson, ContactNumber: contactNumber, ContactEmail: contactEmail,
+      ClientRequestDate: clientReq, PreferredDate: preferred, DateFlexible: req.dateFlexible ? "Yes" : "No",
+      Topic: arCleanStr(req.topic, 300), ProductsJSON: JSON.stringify(products), Notes: arCleanStr(req.notes, 2000),
+      ProposedUsername: proposed ? proposed.Username : "", ProposedName: proposed ? proposed.FullName : "",
+      Status: "Submitted", TeamJSON: "[]", SessionsJSON: "[]", TodoJSON: "[]",
+      CertsJSON: JSON.stringify(certs), CertStatus: arCertStatus(certs), CertInfoJSON: "{}",
+      ContinuationCount: 0, RemindersJSON: "{}", PocJSON: poc ? JSON.stringify(poc) : "",
+      HistoryJSON: JSON.stringify([{ at: new Date().toISOString(), by: u.FullName, action: "Submitted",
+        note: proposed ? "Talked to " + proposed.FullName + " already" : "" }]),
+    };
+    appendRow(SS.getSheetByName(AR_SHEET), row);
+    SpreadsheetApp.flush();
+    if (wantsLab) {
+      try { rlCreate(u, rlFromAppsRequest(u, Object.assign({}, req, { institution: institution }), types), row.RequestID); }
+      catch (e) { arUpdate(row.RequestID, { HistoryJSON: srHistory(arGet(row.RequestID), "RainForce", "RAINLAB not booked", String(e.message || e)) }); }
+    }
+  });
+  logAudit(u.Username, "AR_SUBMITTED", row.RequestID, institution);
+
+  if (selfHandle) {
+    arDoAssign(u, arGet(row.RequestID), u.Username, req.scheduledDate, req.scheduledTime, req.endDate, req.extraUsernames, "", "Taking this myself");
+    return { ok: true, requestId: row.RequestID, handling: true };
+  }
+  arNotifySubmitted(arGet(row.RequestID));
+  return { ok: true, requestId: row.RequestID, proposed: proposed ? proposed.FullName : "" };
+}
+
+// ---------------------------------------------------------------------------
+// PROOF OF CONCEPT — Sample Analysis Request Form (Document ID SLS-FM-05)
+// Sections 1–3 are answered with the request; Section 4 (Receiving) by the specialist.
+// ---------------------------------------------------------------------------
+const AR_POC_STATES = ["Solid", "Liquid", "Solution", "Other"];
+const AR_POC_HAZARDS = ["(Highly) Flammable", "Corrosive", "Oxidizing", "Irritant", "Toxic", "Carcinogenic", "Teratogenic", "Biologically active", "None of the above"];
+function arCleanPoc(p, strict) {
+  p = p || {};
+  const c = (v, n) => arCleanStr(v, n || 2000);
+  const d = p.declaration || {};
+  const out = {
+    sampleName: c(p.sampleName, 1000), state: AR_POC_STATES.indexOf(p.state) !== -1 ? p.state : "", stateOther: c(p.stateOther, 200),
+    solution: c(p.solution), objective: c(p.objective),
+    hazards: [].concat(p.hazards || []).filter(h => AR_POC_HAZARDS.indexOf(h) !== -1),
+    hazardDetails: c(p.hazardDetails), handling: c(p.handling), exposure: c(p.exposure), spillage: c(p.spillage),
+    declaration: { name: c(d.name, 160), jobTitle: c(d.jobTitle, 160), company: c(d.company, 250), phone: c(d.phone, 60), email: c(d.email, 160), date: c(d.date, 20) },
+  };
+  if (out.hazards.indexOf("None of the above") !== -1) out.hazards = ["None of the above"];
+  if (strict) {
+    if (!out.sampleName) throw new Error("Proof of Concept: enter the sample name / code number.");
+    if (!out.state) throw new Error("Proof of Concept: choose the sample state.");
+    if (out.state === "Other" && !out.stateOther) throw new Error("Proof of Concept: describe the sample state.");
+    if (out.state === "Solution" && !out.solution) throw new Error("Proof of Concept: give the concentration and solvents.");
+    if (!out.objective) throw new Error("Proof of Concept: enter the objective of the analysis.");
+    if (!out.hazards.length) throw new Error("Proof of Concept: tick the sample's hazards, or \"None of the above\".");
+    if (!out.declaration.name) throw new Error("Proof of Concept: enter the client's name in the declaration.");
+  }
+  return out;
+}
+/** Edit the form (sections 1–3: requester, specialist or lead) and/or Section 4 Receiving (specialist or lead). */
+function arSavePoc(session, id, poc, receiving) {
+  const u = arUser(session);
+  return srWithLock(() => {
+    const row = arGet(id);
+    if (arTypesOf(row).indexOf("Proof of Concept") === -1) throw new Error("This request isn't a Proof of Concept.");
+    const onJob = arOnJob(row, u.Username), lead = arCanManageRow(u, row), mine = row.RequestorUsername === u.Username;
+    if (!onJob && !lead && !mine) throw new Error("You can't edit this form.");
+    const cur = srJson(row.PocJSON, {});
+    let next = cur;
+    if (poc) next = Object.assign(arCleanPoc(poc, true), { receiving: cur.receiving || null });
+    if (receiving) {
+      if (!onJob && !lead) throw new Error("Only the specialist on this job can fill in Receiving.");
+      const day = receiving.dateReceived ? srIsoDate(srDateFromInput(receiving.dateReceived)) : "";
+      next.receiving = { specialist: arCleanStr(receiving.specialist, 160) || u.FullName, dateReceived: day,
+        remarks: arCleanStr(receiving.remarks, 2000), by: u.FullName, at: new Date().toISOString() };
+    }
+    arUpdate(id, { PocJSON: JSON.stringify(next), HistoryJSON: srHistory(row, u.FullName,
+      receiving && !poc ? "Sample received" : "Sample analysis form updated", receiving && receiving.dateReceived ? "Received " + receiving.dateReceived : "") });
+    return { ok: true };
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Assign / claim / reschedule / transfer / cancel
+// ---------------------------------------------------------------------------
+/** Shared by lead assignment, "I'm handling this", and continuation hand-offs. */
+function arDoAssign(actor, row, specUsername, dateStr, timeStr, endDateStr, extraUsernames, note, action) {
+  const spec = arFindUser(specUsername);
+  if (!spec || !arIsSpecialist(spec)) throw new Error("Pick an Applications specialist.");
+  if (!dateStr) throw new Error("Pick the date of the job.");
+  const day = srDateFromInput(dateStr);
+  const end = endDateStr ? srDateFromInput(endDateStr) : "";
+  if (end && end < day) throw new Error("The end date can't be before the start date.");
+  const crew = [].concat(extraUsernames || []).filter(n => n && n !== spec.Username)
+    .map(arFindUser).filter(Boolean).map(x => ({ username: x.Username, name: x.FullName, email: x.Email }));
+  const previous = row.SpecialistEmail && row.SpecialistUsername !== spec.Username ? row.SpecialistEmail : "";
+  const hist = srHistory(row, actor.FullName, action || (row.SpecialistUsername ? "Reassigned" : "Assigned"),
+    spec.FullName + (crew.length ? " + " + crew.map(c => c.name).join(", ") : "") + " · " + fmtDateForEmail(day) + (note ? " — " + note : ""));
+  arUpdate(row.RequestID, {
+    SpecialistUsername: spec.Username, SpecialistName: spec.FullName, SpecialistEmail: spec.Email || "",
+    TeamJSON: JSON.stringify(crew), AssignedByName: actor.FullName, DateAssigned: new Date(),
+    FirstScheduledDate: row.FirstScheduledDate || day, ScheduledDate: day, ScheduledTime: srCleanTime(timeStr), EndDate: end,
+    AssignNote: note ? arCleanStr(note, 500) : (row.AssignNote || ""),
+    Status: row.Status === "InProgress" ? "InProgress" : "Scheduled",
+    ProposedUsername: "", ProposedName: "", PendingReason: "",
+    AttendanceCode: row.AttendanceCode || arNewCode(), HistoryJSON: hist,
+  });
+  if (typeof rlMoveLinked === "function") rlMoveLinked(row, day, actor.FullName);
+  logAudit(actor.Username, "AR_ASSIGNED", row.RequestID, spec.Username);
+  arNotifyAssigned(arGet(row.RequestID), actor, previous);
+}
+function arAssign(session, id, specUsername, dateStr, timeStr, endDateStr, extraUsernames, note) {
+  return srWithLock(() => {
+    const u = arUser(session), row = arGet(id);
+    if (!arCanManageRow(u, row)) throw new Error("Only the " + row.Team + " lead can assign this job.");
+    if (!arIsOpen(row)) throw new Error("This job is already done or cancelled.");
+    arDoAssign(u, row, specUsername, dateStr, timeStr, endDateStr, extraUsernames, note);
+    return { ok: true };
+  });
+}
+/** The specialist Sales talked to: "I'm handling this". */
+function arClaim(session, id, dateStr, timeStr, endDateStr, extraUsernames) {
+  return srWithLock(() => {
+    const u = arUser(session), row = arGet(id);
+    if (row.Status !== "Submitted") throw new Error("This request has already been assigned.");
+    if (row.ProposedUsername !== u.Username) throw new Error("Only " + (row.ProposedName || "the named specialist") + " can take this one.");
+    arDoAssign(u, row, u.Username, dateStr, timeStr, endDateStr, extraUsernames, "", "I'm handling this");
+    return { ok: true };
+  });
+}
+/** The named specialist can't take it — it goes to the team lead. */
+function arPassToLead(session, id, note) {
+  return srWithLock(() => {
+    const u = arUser(session), row = arGet(id);
+    if (row.ProposedUsername !== u.Username) throw new Error("This request isn't waiting for you.");
+    arUpdate(id, { ProposedUsername: "", ProposedName: "", HistoryJSON: srHistory(row, u.FullName, "Passed to the lead", arCleanStr(note, 300)) });
+    const r = arGet(id);
+    arMail(r, {
+      to: arLeadEmails(r.Team), cc: [r.RequestorEmail],
+      subject: "Please assign " + arTag(r), banner: "↪️ " + u.FullName + " can't take this one",
+      intro: `<strong>${escHtml(u.FullName)}</strong> passed this request to you${note ? ": <em>" + escHtml(note) + "</em>" : "."}`,
+      introPlain: u.FullName + " passed this request to you." + (note ? " " + note : ""),
+      next: "Assign a specialist in <strong>Application Requests</strong>.", color: "#92400e", bg: "#fef3c7",
+    });
+    return { ok: true };
+  });
+}
+function arReschedule(session, id, dateStr, timeStr, endDateStr, reason) {
+  return srWithLock(() => {
+    const u = arUser(session), row = arGet(id);
+    arRequireJobOrManager(u, row);
+    if (["Scheduled", "InProgress"].indexOf(row.Status) === -1) throw new Error("Only scheduled jobs can be moved.");
+    const day = srDateFromInput(dateStr);
+    const end = endDateStr ? srDateFromInput(endDateStr) : "";
+    if (end && end < day) throw new Error("The end date can't be before the start date.");
+    const old = row.ScheduledDate;
+    arUpdate(id, { ScheduledDate: day, ScheduledTime: srCleanTime(timeStr), EndDate: end, PendingReason: arCleanStr(reason, 200),
+      HistoryJSON: srHistory(row, u.FullName, "Rescheduled", fmtDateForEmail(old) + " → " + fmtDateForEmail(day) + (reason ? " — " + reason : "")) });
+    if (typeof rlMoveLinked === "function") rlMoveLinked(row, day, u.FullName);
+    const r = arGet(id);
+    arMail(r, {
+      to: arJobEmails(r), cc: [r.RequestorEmail, r.AccountEmail].concat(arLeadEmails(r.Team)),
+      subject: "Moved: " + arTag(r), banner: "📅 New date: " + arWhen(r),
+      intro: `Moved from ${fmtDateForEmail(old)} to <strong>${arWhen(r)}</strong> by ${escHtml(u.FullName)}${reason ? " — " + escHtml(reason) : ""}.`,
+      introPlain: "Moved from " + fmtDateForEmail(old) + " to " + arWhen(r) + " by " + u.FullName + (reason ? " — " + reason : ""),
+    });
+    return { ok: true };
+  });
+}
+function arTransferTeam(session, id, team) {
+  return srWithLock(() => {
+    const u = arUser(session), row = arGet(id);
+    if (!arCanManageRow(u, row)) throw new Error("Only the " + row.Team + " lead can move this request.");
+    if (AR_TEAMS.indexOf(team) === -1 || team === row.Team) throw new Error("Pick the other team.");
+    if (["Submitted", "ForContinuation"].indexOf(row.Status) === -1) throw new Error("Only unassigned requests can be moved to the other team.");
+    arUpdate(id, { Team: team, HistoryJSON: srHistory(row, u.FullName, "Moved to " + team, "") });
+    const r = arGet(id);
+    arMail(r, {
+      to: arLeadEmails(team), cc: [r.RequestorEmail],
+      subject: "Moved to " + team + ": " + arTag(r), banner: "🔀 Moved to " + team + " Apps",
+      intro: `${escHtml(u.FullName)} moved this request to the <strong>${team}</strong> team.`,
+      introPlain: u.FullName + " moved this request to the " + team + " team.",
+      next: "Assign a specialist in <strong>Application Requests</strong>.",
+    });
+    return { ok: true };
+  });
+}
+function arCancel(session, id, reason) {
+  if (!arCleanStr(reason, 500)) throw new Error("Give the reason for cancelling.");
+  return srWithLock(() => {
+    const u = arUser(session), row = arGet(id);
+    const mine = row.RequestorUsername === u.Username && row.Status === "Submitted";
+    if (!mine && !arCanManageRow(u, row)) throw new Error("Only the requester (before it's assigned) or the " + row.Team + " lead can cancel this.");
+    if (!arIsOpen(row)) throw new Error("This job is already closed.");
+    arUpdate(id, { Status: "Cancelled", CancelReason: arCleanStr(reason, 500), HistoryJSON: srHistory(row, u.FullName, "Cancelled", arCleanStr(reason, 500)) });
+    if (typeof rlCancelLinked === "function") rlCancelLinked(row, u.FullName, arCleanStr(reason, 300));
+    const r = arGet(id);
+    arMail(r, {
+      to: [r.RequestorEmail].concat(arJobEmails(r)), cc: [r.AccountEmail].concat(arLeadEmails(r.Team)),
+      subject: "Cancelled: " + arTag(r), banner: "✕ Request cancelled", color: "#991b1b", bg: "#fee2e2",
+      intro: `Cancelled by ${escHtml(u.FullName)}${reason ? ": " + escHtml(reason) : "."}`,
+      introPlain: "Cancelled by " + u.FullName + (reason ? ": " + reason : "."),
+    });
+    return { ok: true };
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Specialist — to-do list, start, sessions / report, continuation
+// ---------------------------------------------------------------------------
+function arSaveTodo(session, id, items) {
+  return srWithLock(() => {
+    const u = arUser(session), row = arGet(id);
+    arRequireJobOrManager(u, row);
+    const prev = {};
+    srJson(row.TodoJSON, []).forEach(t => { prev[t.id] = t; });
+    const now = new Date().toISOString();
+    const clean = (items || []).slice(0, 80).map((t, i) => {
+      const text = arCleanStr(t.text, 200);
+      if (!text) return null;
+      const id2 = arCleanStr(t.id, 20) || ("t" + Date.now().toString(36) + i);
+      const was = prev[id2] || {};
+      const done = !!t.done;
+      return {
+        id: id2, cat: AR_TODO_CATS.indexOf(t.cat) !== -1 ? t.cat : "Others", text: text,
+        qty: arCleanStr(t.qty, 20), done: done,
+        doneAt: done ? (was.done ? was.doneAt : now) : "", doneBy: done ? (was.done ? was.doneBy : u.FullName) : "",
+      };
+    }).filter(Boolean);
+    arUpdate(id, { TodoJSON: JSON.stringify(clean) });
+    return { ok: true, todo: clean };
+  });
+}
+function arStartJob(session, id) {
+  return srWithLock(() => {
+    const u = arUser(session), row = arGet(id);
+    arRequireJobOrManager(u, row);
+    if (row.Status !== "Scheduled") throw new Error("Only a scheduled job can be started.");
+    arUpdate(id, { Status: "InProgress", StartedDate: row.StartedDate || new Date(), HistoryJSON: srHistory(row, u.FullName, "Started", "") });
+    return { ok: true };
+  });
+}
+function arCleanReport(rep, types) {
+  rep = rep || {};
+  const s = (k, m) => arCleanStr(rep[k], m || 2000);
+  return {
+    instrument: s("instrument", 200), serial: s("serial", 100), channel: s("channel", 60),
+    problem: s("problem"), findings: s("findings"), action: s("action"),
+    result: ["Resolved", "Partly resolved", "Not resolved"].indexOf(rep.result) !== -1 ? rep.result : "",
+    recommendations: s("recommendations"), reportNo: s("reportNo", 60), clientName: s("clientName", 120),
+  };
+}
+/**
+ * One visit / session. s = { date, outcome: "Done"|"Continue", note, attendees,
+ *   handling: "self"|"lead", nextDate, nextTime, nextEndDate, pendingReason, report }
+ */
+function arLogSession(session, id, s) {
+  return srWithLock(() => {
+    const u = arUser(session), row = arGet(id);
+    arRequireJobOrManager(u, row);
+    if (["Scheduled", "InProgress"].indexOf(row.Status) === -1) throw new Error("This job isn't scheduled right now.");
+    s = s || {};
+    if (!s.date) throw new Error("Enter the date of the session.");
+    const day = srDateFromInput(s.date);
+    if (day > stripTime(new Date())) throw new Error("The session date can't be in the future.");
+    if (["Done", "Continue"].indexOf(s.outcome) === -1) throw new Error("Is the job done, or does it need another visit?");
+    let report = null;
+    if (arNeedsReport(row)) {
+      report = arCleanReport(s.report, arTypesOf(row));
+      if (!report.problem || !report.action || !report.result) throw new Error("Fill in the report: problem, action taken and result.");
+    }
+    const summary = arNeedsSummary(row) ? arCleanSummary(s.summary, arTypesOf(row)) : null;
+    const sessions = srJson(row.SessionsJSON, []);
+    sessions.push({ date: srIsoDate(day), by: u.FullName, names: arJobNames(row), outcome: s.outcome,
+      note: arCleanStr(s.note, 2000), attendees: Math.max(0, parseInt(s.attendees, 10) || 0), report: report, summary: summary, at: new Date().toISOString() });
+    const upd = { SessionsJSON: JSON.stringify(sessions), StartedDate: row.StartedDate || day };
+    if (report) upd.ReportJSON = JSON.stringify(report);
+    if (summary) { upd.SummaryJSON = JSON.stringify(summary); upd.LeadInterest = summary.interest === "N/A" ? "" : summary.interest; }
+
+    if (s.outcome === "Done") {
+      Object.assign(upd, { Status: "Completed", DateJobDone: day, CompletionNote: arCleanStr(s.note, 2000), PendingReason: "",
+        HistoryJSON: srHistory(row, u.FullName, "Job done", arCleanStr(s.note, 300)) });
+      arUpdate(id, upd);
+      logAudit(u.Username, "AR_DONE", id, "");
+      arNotifyDone(arGet(id), u);
+      if (summary) arNotifySummary(arGet(id), u, summary);
+      return { ok: true, done: true, certsToSend: arCertStatus(arCertsOf(row)) === "ToSend" };
+    }
+    // Needs another visit
+    const reason = arCleanStr(s.pendingReason, 100);
+    upd.ContinuationCount = (Number(row.ContinuationCount) || 0) + 1;
+    upd.PendingReason = reason;
+    if (s.handling === "self") {
+      if (!s.nextDate) throw new Error("Pick the date of the next visit.");
+      const next = srDateFromInput(s.nextDate);
+      const nextEnd = s.nextEndDate ? srDateFromInput(s.nextEndDate) : "";
+      Object.assign(upd, { Status: "Scheduled", ScheduledDate: next, ScheduledTime: srCleanTime(s.nextTime), EndDate: nextEnd,
+        HistoryJSON: srHistory(row, u.FullName, "Continuation — still handling", "Next visit " + fmtDateForEmail(next) + (reason ? " · " + reason : "")) });
+      arUpdate(id, upd);
+      arNotifyContinuation(arGet(id), u, true);
+      if (summary) arNotifySummary(arGet(id), u, summary);
+    } else {
+      Object.assign(upd, { Status: "ForContinuation",
+        HistoryJSON: srHistory(row, u.FullName, "Continuation — back to the lead", reason) });
+      arUpdate(id, upd);
+      arNotifyContinuation(arGet(id), u, false);
+      if (summary) arNotifySummary(arGet(id), u, summary);
+    }
+    return { ok: true, done: false };
+  });
+}
+
+// ---------------------------------------------------------------------------
+// VISIT SUMMARY — a one-minute summary after every visit of a job that has no
+// troubleshooting / remote report (demos, trainings, presentations, PoC, site visits).
+// The next step goes to Sales (account in charge) and the requester automatically.
+// ---------------------------------------------------------------------------
+const AR_SUM_OUTCOMES = ["Successful", "Partly successful", "Not successful"];
+const AR_SUM_INTEREST = ["Hot", "Warm", "Cold", "N/A"];
+const AR_SUM_NEXTBY = ["Sales", "Applications", "Service", "Client", "No next step"];
+function arNeedsSummary(row) { return arTypesOf(row).some(t => AR_REPORT_TYPES.indexOf(t) === -1); }
+function arCleanSummary(sm, types) {
+  sm = sm || {};
+  const c = (k, n) => arCleanStr(sm[k], n || 1000), has = t => types.indexOf(t) !== -1;
+  const out = {
+    done: c("done"), outcome: AR_SUM_OUTCOMES.indexOf(sm.outcome) !== -1 ? sm.outcome : "",
+    interest: AR_SUM_INTEREST.indexOf(sm.interest) !== -1 ? sm.interest : "",
+    nextStep: c("nextStep", 500), nextBy: AR_SUM_NEXTBY.indexOf(sm.nextBy) !== -1 ? sm.nextBy : "",
+  };
+  if (has("Demonstration") || has("Proof of Concept")) Object.assign(out, { samples: c("samples"), results: c("results"), reaction: c("reaction") });
+  if (has("Training")) Object.assign(out, { topics: c("topics"), handsOn: ["Yes", "No"].indexOf(sm.handsOn) !== -1 ? sm.handsOn : "" });
+  if (has("Presentation")) Object.assign(out, { products: c("products"), questions: c("questions") });
+  if (has("Site Visit")) Object.assign(out, { purpose: c("purpose"), findings: c("findings") });
+  if (!out.done) throw new Error("Visit summary: say what was done.");
+  if (!out.outcome) throw new Error("Visit summary: choose the outcome.");
+  if (!out.interest) throw new Error("Visit summary: choose the client's interest (or N/A).");
+  if (!out.nextBy) throw new Error("Visit summary: say who does the next step (or No next step).");
+  if (out.nextBy !== "No next step" && !out.nextStep) throw new Error("Visit summary: write the next step.");
+  if (out.nextBy === "No next step") out.nextStep = "";
+  return out;
+}
+const AR_SUM_LABELS = { done: "What was done", outcome: "Outcome", interest: "Client interest", samples: "Samples run", results: "Results",
+  reaction: "Client's reaction", topics: "Topics covered", handsOn: "Hands-on done", products: "Products presented", questions: "Questions raised",
+  purpose: "Purpose", findings: "Findings" };
+function arSummaryHtml(sm, row) {
+  if (!sm) return "";
+  const tr = (k, v) => v ? `<tr><td style="padding:3px 12px 3px 0;color:#6b7280;vertical-align:top;white-space:nowrap;">${k}</td><td style="padding:3px 0;color:#111827;">${escHtml(v)}</td></tr>` : "";
+  const next = sm.nextBy && sm.nextBy !== "No next step"
+    ? `<div style="background:#fef3c7;border-left:4px solid #d97706;border-radius:8px;padding:10px 14px;margin:10px 0 0;font-size:13.5px;color:#78350f;"><strong>Next step — ${escHtml(sm.nextBy)}${sm.nextBy === "Sales" && row && row.AccountName ? " (" + escHtml(row.AccountName) + ")" : ""}:</strong> ${escHtml(sm.nextStep)}</div>` : "";
+  return `<div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:10px;padding:12px 14px;margin:0 0 12px;">
+    <div style="font-weight:800;color:#0a1930;margin-bottom:6px;">📝 Visit summary</div><table style="font-size:13px;border-collapse:collapse;">` +
+    Object.keys(AR_SUM_LABELS).map(k => tr(AR_SUM_LABELS[k], sm[k] === "N/A" && k === "interest" ? "" : sm[k])).join("") + `</table>${next}</div>`;
+}
+/** The summary goes to Sales (account in charge) and the requester; the lead is copied. */
+function arNotifySummary(row, by, sm) {
+  const nb = sm.nextBy && sm.nextBy !== "No next step";
+  arMail(row, {
+    to: [row.AccountEmail, row.RequestorEmail], cc: arLeadEmails(row.Team),
+    subject: (nb ? "Next step for " + sm.nextBy + ": " : "Visit summary: ") + arTag(row),
+    banner: "📝 Visit summary" + (sm.interest && sm.interest !== "N/A" ? " · " + (sm.interest === "Hot" ? "🔥 " : "") + sm.interest + " lead" : ""), color: "#1d4ed8", bg: "#dbeafe",
+    intro: `${escHtml(by.FullName)} logged a visit${row.Status === "Completed" ? " and closed the job" : " — the job continues"}.`,
+    introPlain: by.FullName + " logged a visit. " + sm.done + (nb ? "\nNext step (" + sm.nextBy + "): " + sm.nextStep : ""),
+    extraHtml: arSummaryHtml(sm, row),
+    next: nb && sm.nextBy === "Sales" ? "Sales: follow up with the client." : "",
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Certificates & training agenda (made by Carlo)
+// ---------------------------------------------------------------------------
+/**
+ * info = { title, institution, date, endDate, venue, trainor }
+ * certs = { Appearance: { needed, names: [] }, TrainingCert: {...}, Agenda: { needed } }
+ * sendKeys = which ones go to the cert maker now.
+ */
+function arSaveCerts(session, id, info, certs, sendKeys) {
+  return srWithLock(() => {
+    const u = arUser(session), row = arGet(id);
+    arRequireJobOrManager(u, row);
+    if (row.Status === "Cancelled") throw new Error("This job was cancelled.");
+    info = info || {};
+    const cleanInfo = { title: arCleanStr(info.title, 200), institution: arCleanStr(info.institution, 200), date: arCleanStr(info.date, 10),
+      endDate: arCleanStr(info.endDate, 10), venue: arCleanStr(info.venue, 300), trainor: arCleanStr(info.trainor, 300) };
+    const cur = arCertsOf(row), now = new Date().toISOString();
+    const sending = [];
+    AR_CERTS.forEach(c => {
+      const inp = (certs || {})[c.key] || {};
+      const was = cur[c.key] || {};
+      if (!inp.needed) { if (was.state !== "Done") delete cur[c.key]; return; }
+      const names = c.needsNames ? (inp.names || []).map(n => arCleanStr(n, 120)).filter(Boolean) : [];
+      const changed = JSON.stringify(names) !== JSON.stringify(was.names || []);
+      cur[c.key] = Object.assign({}, was, { needed: true, names: names, state: was.state || "" });
+      if ((sendKeys || []).indexOf(c.key) !== -1) {
+        if (c.needsNames && !names.length) throw new Error("Add the names for the " + c.label + ".");
+        if (was.state === "Done" && !changed) return;   // nothing new to send
+        cur[c.key] = Object.assign(cur[c.key], { state: "Pending", sentAt: now, sentBy: u.FullName, resent: !!was.state, doneAt: "", doneBy: "" });
+        sending.push(c);
+      }
+    });
+    if (sending.length) {
+      const missing = ["title", "institution", "date", "venue", "trainor"].filter(k => !cleanInfo[k]);
+      if (missing.length) throw new Error("Fill in the certificate details first: " + missing.join(", ") + ".");
+    }
+    const status = arCertStatus(cur);
+    arUpdate(id, { CertsJSON: JSON.stringify(cur), CertInfoJSON: JSON.stringify(cleanInfo), CertStatus: status,
+      DateCertsDone: status === "Done" ? (row.DateCertsDone || new Date()) : "",
+      HistoryJSON: sending.length ? srHistory(row, u.FullName, "Sent to " + arCertMakerName(), sending.map(c => c.label).join(", ")) : row.HistoryJSON });
+    if (sending.length) arNotifyCertRequest(arGet(id), sending, u);
+    return { ok: true, sent: sending.length };
+  });
+}
+/** Cert maker marks one document done (optional ref: cert no. or a link). */
+/** Certificate serial numbers: RP<year>-0001, counting up across all certificates issued that year.
+ *  Assigned once per person per certificate and kept (re-downloading never changes them). */
+function arCertSerials(session, id) {
+  const u = arUser(session);
+  return srWithLock(() => {
+    const row = arGet(id);
+    if (!arIsCertMaker(u) && !arCanManageRow(u, row) && !arOnJob(row, u.Username)) throw new Error("You can't do that for this job.");
+    const certs = arCertsOf(row), year = new Date().getFullYear();
+    const props = PropertiesService.getScriptProperties(), key = "CERT_SERIAL_" + year;
+    let last = Number(props.getProperty(key)) || 0, added = 0;
+    AR_CERTS.filter(c => c.needsNames).forEach(c => {
+      const x = certs[c.key];
+      if (!x || !x.needed) return;
+      x.serials = x.serials || {};
+      (x.names || []).forEach(n => {
+        if (x.serials[n]) return;
+        last++; added++;
+        x.serials[n] = "RP" + year + "-" + String(last).padStart(4, "0");
+      });
+    });
+    if (added) {
+      props.setProperty(key, String(last));
+      arUpdate(id, { CertsJSON: JSON.stringify(certs), HistoryJSON: srHistory(row, u.FullName, "Serial numbers assigned", added + " new") });
+    }
+    return { ok: true, certs: certs };
+  });
+}
+function arCertDone(session, id, key, ref) {
+  return srWithLock(() => {
+    const u = arUser(session), row = arGet(id);
+    if (!arIsCertMaker(u)) throw new Error("Only " + arCertMakerName() + " can mark certificates done.");
+    const certs = arCertsOf(row), c = AR_CERTS.find(x => x.key === key);
+    if (!c || !certs[key] || certs[key].state !== "Pending") throw new Error("That document isn't waiting to be made.");
+    certs[key] = Object.assign(certs[key], { state: "Done", ref: arCleanStr(ref, 300), doneAt: new Date().toISOString(), doneBy: u.FullName });
+    const status = arCertStatus(certs);
+    arUpdate(id, { CertsJSON: JSON.stringify(certs), CertStatus: status, DateCertsDone: status === "Done" ? new Date() : "",
+      HistoryJSON: srHistory(row, u.FullName, c.label + " done", arCleanStr(ref, 200)) });
+    const r = arGet(id);
+    arMail(r, {
+      to: arJobEmails(r), cc: [r.RequestorEmail, r.AccountEmail],
+      subject: c.label + " ready: " + arTag(r), banner: "🎓 " + c.label + " is ready", color: "#166534", bg: "#dcfce7",
+      intro: `${escHtml(u.FullName)} finished the <strong>${c.label}</strong>${ref ? " — " + escHtml(ref) : ""}.` +
+        (status === "Done" ? " All certificates for this job are done." : ""),
+      introPlain: u.FullName + " finished the " + c.label + (ref ? " — " + ref : "") + ".",
+    });
+    return { ok: true };
+  });
+}
+
+// ---------------------------------------------------------------------------
+// SERVICE TRAININGS — Service jobs can use the attendance / feedback pages and ask Carlo
+// for certificates. A linked row (RequestID = the SR number, Source = Service) is kept in
+// AppsRequests; it never shows on the Apps boards, jobs or monthly report.
+// ---------------------------------------------------------------------------
+/** Copy the service job's details onto its linked row (creates it the first time). Returns the row. */
+function arSvcSync(srId, createIfMissing) {
+  const sr = findRow(SR_SHEET, "RequestID", srId);
+  if (!sr) throw new Error("Service request " + srId + " was not found.");
+  const done = ["Completed", "DeliverablesPending"].indexOf(sr.Status) !== -1;
+  const upd = {
+    Source: "Service", LinkedID: srId, JobType: "Training", Team: "", PaymentType: sr.PaymentType,
+    Institution: sr.Institution, ClientDepartment: sr.ClientDepartment, Address: sr.Address,
+    ContactPerson: sr.ContactPerson, ContactNumber: sr.ContactNumber, ContactEmail: sr.ContactEmail,
+    RequestorUsername: sr.RequestorUsername, RequestorName: sr.RequestorName, RequestorEmail: sr.RequestorEmail,
+    AccountName: sr.SalesName, AccountEmail: sr.SalesEmail,
+    SpecialistUsername: sr.EngineerUsername, SpecialistName: sr.EngineerName, SpecialistEmail: sr.EngineerEmail,
+    TeamJSON: sr.TeamJSON || "[]", ScheduledDate: sr.ScheduledDate, ScheduledTime: sr.ScheduledTime,
+    Status: sr.Status === "Cancelled" ? "Cancelled" : done ? "Completed" : "Scheduled",
+  };
+  const row = findRow(AR_SHEET, "RequestID", srId);
+  if (row) {
+    const changed = Object.keys(upd).some(k => String(upd[k] instanceof Date ? upd[k].getTime() : upd[k]) !== String(row[k] instanceof Date ? row[k].getTime() : row[k]));
+    if (changed) arUpdate(srId, upd);
+    return changed ? arGet(srId) : row;
+  }
+  if (!createIfMissing) return null;
+  const kinds = String(sr.SupportKinds || "");
+  appendRow(SS.getSheetByName(AR_SHEET), Object.assign({
+    RequestID: srId, DateRequested: new Date(), FirstScheduledDate: sr.ScheduledDate,
+    Topic: kinds.indexOf("End-user Training") !== -1 ? "End-user Training" : (sr.ServiceType || "Service") + " — User Training",
+    AttendanceCode: arNewCode(), CertsJSON: "{}", CertStatus: "None", CertInfoJSON: "{}", TodoJSON: "[]", SessionsJSON: "[]",
+    RemindersJSON: "{}", ContinuationCount: 0, DateFlexible: "No",
+    HistoryJSON: JSON.stringify([{ at: new Date().toISOString(), by: "RainForce", action: "Linked to service job " + srId, note: "" }]),
+  }, upd));
+  SpreadsheetApp.flush();
+  return arGet(srId);
+}
+/** Engineer on the job or the Service Coordinator / Manager: open attendance, feedback and certificates for a service job. */
+function arServiceLink(session, srId) {
+  const u = arUser(session);
+  const sr = findRow(SR_SHEET, "RequestID", srId);
+  if (!sr) throw new Error("Service request " + srId + " was not found.");
+  if (!srOnTeam(sr, u.Username) && !srIsManager(u)) throw new Error("Only the engineers on this job or the Service Coordinator can do that.");
+  if (sr.Status === "Cancelled") throw new Error("This service job was cancelled.");
+  if (!sr.EngineerUsername) throw new Error("Assign an engineer first.");
+  const row = srWithLock(() => arSvcSync(srId, true));
+  return { ok: true, request: arWithStats([row])[0] };
+}
+
+// ---------------------------------------------------------------------------
+// Loaders
+// ---------------------------------------------------------------------------
+/** Attendance count + feedback count/average per job, added to each row as _att / _fb / _fbAvg. */
+function arWithStats(rows) {
+  const att = {}, fb = {};
+  getRows(AR_ATT_SHEET).forEach(a => { att[a.RequestID] = (att[a.RequestID] || 0) + 1; });
+  getRows(AR_FB_SHEET).forEach(f => {
+    const o = fb[f.RequestID] || (fb[f.RequestID] = { n: 0, sum: 0, scored: 0 });
+    o.n++;
+    const v = Number(f.AvgScore);
+    if (!isNaN(v) && v > 0) { o.sum += v; o.scored++; }
+  });
+  const lab = typeof rlLinkedMap === "function" ? rlLinkedMap() : {};
+  return rows.map(r => Object.assign(r, { _lab: lab[r.RequestID] || [], _att: att[r.RequestID] || 0, _fb: (fb[r.RequestID] || {}).n || 0,
+    _fbAvg: fb[r.RequestID] && fb[r.RequestID].scored ? Math.round(fb[r.RequestID].sum / fb[r.RequestID].scored * 100) / 100 : null }));
+}
+function arSortNewest(rows) { return rows.sort((a, b) => new Date(b.DateRequested) - new Date(a.DateRequested)); }
+function arGetMyRequests(session) {
+  const u = arUser(session);
+  const me = String(u.Email || "").toLowerCase();
+  return { ok: true, requests: arWithStats(arSortNewest(getRows(AR_SHEET).filter(r => !arIsSvc(r) &&
+    (r.RequestorUsername === u.Username || (me && String(r.AccountEmail).toLowerCase() === me))))) };
+}
+function arGetBoard(session) {
+  const u = arUser(session);
+  if (!arIsManager(u)) throw new Error("Only the Applications leads can open the board.");
+  return { ok: true, requests: arWithStats(arSortNewest(getRows(AR_SHEET).filter(r => !arIsSvc(r) && arCanManageRow(u, r)))) };
+}
+function arGetMyJobs(session) {
+  const u = arUser(session);
+  return { ok: true, requests: arWithStats(arSortNewest(getRows(AR_SHEET).filter(r => !arIsSvc(r) &&
+    (arOnJob(r, u.Username) || (r.Status === "Submitted" && r.ProposedUsername === u.Username))))) };
+}
+function arGetCertQueue(session) {
+  const u = arUser(session);
+  if (!arIsCertMaker(u) && !arIsManager(u)) throw new Error("Only the certificate maker and the Applications leads can open this.");
+  const since = new Date(); since.setDate(since.getDate() - 45);
+  // service trainings: pick up any date / engineer change on the service job first
+  getRows(AR_SHEET).filter(r => arIsSvc(r) && Object.keys(arCertsOf(r)).length && r.Status !== "Cancelled").forEach(r => { try { arSvcSync(r.RequestID); } catch (e) {} });
+  return { ok: true, requests: arWithStats(arSortNewest(getRows(AR_SHEET).filter(r => {
+    const c = arCertsOf(r);
+    return Object.keys(c).some(k => c[k].state === "Pending" || (c[k].state === "Done" && c[k].doneAt && new Date(c[k].doneAt) >= since));
+  }))) };
+}
+/** Everything the monthly report needs. Leads get their team; the Applications Manager / Admin get both. */
+function arGetReportData(session) {
+  const u = arUser(session);
+  if (!arIsManager(u)) throw new Error("Only the Applications leads can open the monthly report.");
+  return { ok: true, requests: arWithStats(getRows(AR_SHEET).filter(r => !arIsSvc(r) && arCanManageRow(u, r))), teams: arIsHead(u) ? AR_TEAMS : [u.AppsTeam] };
+}
+function arGetAttendance(session, id) {
+  const u = arUser(session), row = arGet(id);
+  const allowed = arOnJob(row, u.Username) || arCanManageRow(u, row) || arIsCertMaker(u) || row.RequestorUsername === u.Username;
+  if (!allowed) throw new Error("You can't see the attendance for this job.");
+  const linked = srWithLock(() => arLinkFeedbackOnly(row));   // feedback without attendance (incl. older ones) → on the attendance
+  const fbAll = getRows(AR_FB_SHEET).filter(f => f.RequestID === id);
+  const attendees = getRows(AR_ATT_SHEET).filter(a => a.RequestID === id).map(a => ({ via: a.AddedVia || "",
+    answered: fbAll.some(f => (f.AttendeeID && f.AttendeeID === a.AttendeeID) || arNameKey(f.FullName) === arNameKey(a.FullName)),
+    reminders: Number(a.FeedbackReminders) || 0, remindedAt: a.FeedbackRemindedAt || "",
+    id: a.AttendeeID, at: a.Timestamp, name: a.FullName, email: a.Email, mobile: a.Mobile,
+    institution: a.Institution, department: a.Department, position: a.Position }));
+  const attIds = getRows(AR_ATT_SHEET).filter(a => a.RequestID === id).map(a => a.AttendeeID);
+  const feedback = getRows(AR_FB_SHEET).filter(f => f.RequestID === id).map(f => ({ onAttendance: !!f.AttendeeID && attIds.indexOf(f.AttendeeID) !== -1,
+    at: f.Timestamp, name: f.FullName, avg: f.AvgScore === "" ? null : Number(f.AvgScore),
+    ratings: srJson(f.RatingsJSON, {}), trainors: srJson(f.TrainorRatingsJSON, {}), answers: srJson(f.AnswersJSON, {}), comments: f.Comments }));
+  return { ok: true, attendees: attendees, feedback: feedback, linked: linked };
+}
+
+// ---------------------------------------------------------------------------
+// FEEDBACK RATINGS — per specialist and per team (⭐ Feedback Ratings page)
+// Heads see both teams (+ service trainings if they manage Service), leads their team,
+// Service Coordinator / Manager the service trainings, specialists only their own jobs
+// plus their team's overall average for comparison.
+// ---------------------------------------------------------------------------
+function arGetRatings(session, year) {
+  const u = arUser(session);
+  year = Number(year) || new Date().getFullYear();
+  const jobs = {};
+  getRows(AR_SHEET).forEach(r => { jobs[r.RequestID] = r; });
+  const svcMgr = typeof srIsManager === "function" && srIsManager(u);
+  const canSeeAll = r => arIsSvc(r) ? svcMgr : arCanManageRow(u, r);
+  const items = [];
+  const teamAgg = {};
+  getRows(AR_FB_SHEET).forEach(f => {
+    const r = jobs[f.RequestID]; if (!r) return;
+    const when = r.ScheduledDate ? new Date(r.ScheduledDate) : new Date(f.Timestamp);
+    if (when.getFullYear() !== year) return;
+    const team = arIsSvc(r) ? "Service" : r.Team;
+    const avg = f.AvgScore === "" ? null : Number(f.AvgScore);
+    if (avg) { const t = teamAgg[team] || (teamAgg[team] = { sum: 0, n: 0 }); t.sum += avg; t.n++; }
+    const mine = arOnJob(r, u.Username);
+    if (!canSeeAll(r) && !mine) return;
+    const people = [r.SpecialistName].concat(arCrew(r).map(t => t.name)).filter(Boolean);
+    const trainors = srJson(f.TrainorRatingsJSON, {});
+    const item = {
+      requestId: r.RequestID, team: team, date: srIsoDate(stripTime(when)), month: when.getMonth(), jobType: r.JobType,
+      institution: r.Institution, title: srJson(r.CertInfoJSON, {}).title || r.Topic || "", people: people,
+      ratings: srJson(f.RatingsJSON, {}), trainors: trainors, avg: avg, answers: srJson(f.AnswersJSON, {}), comments: f.Comments || "",
+      name: f.FullName, at: f.Timestamp,
+    };
+    if (!canSeeAll(r)) {   // specialist: only their own trainer ratings, and no participant names
+      const me = u.FullName;
+      item.trainors = trainors[me] ? { [me]: trainors[me] } : {};
+      item.name = "";
+    }
+    items.push(item);
+  });
+  const isMgr = arIsManager(u) || svcMgr;
+  const myTeam = u.AppsTeam || (u.Department === "Service" ? "Service" : "");
+  const teamAvg = {};
+  Object.keys(teamAgg).forEach(t => { if (isMgr || t === myTeam) teamAvg[t] = { avg: Math.round(teamAgg[t].sum / teamAgg[t].n * 100) / 100, n: teamAgg[t].n }; });
+  return { ok: true, year: year, items: items, teamAvg: teamAvg, me: u.FullName, isManager: isMgr };
+}
+
+// ---------------------------------------------------------------------------
+// WELCOME EMAIL — Application Requests section (added to "Welcome aboard" in Code.gs)
+// { title, landing, steps[] } matched to the person's Applications role; null = doesn't use it.
+// ---------------------------------------------------------------------------
+function arWelcomeSection(user) {
+  const role = user.role || "";
+  if (["LogisticsStaff", "LogisticsAdmin", "LogisticsManager"].indexOf(role) !== -1) return null;
+  let appsRole = user.appsRole, appsTeam = user.appsTeam;
+  if (appsRole === undefined && user.username) {
+    const row = getRows(SHEETS.USERS).find(x => x.Username === user.username) || {};
+    appsRole = row.AppsRole || ""; appsTeam = row.AppsTeam || "";
+  }
+  const u = { Role: role, Department: user.department || "", AppsRole: appsRole || "", AppsTeam: appsTeam || "" };
+  const r = arRoleOf(u);
+  const cert = arCertMakerName(), chem = arLeadName("Chemistry"), bio = arLeadName("Biology");
+  if (r === "CertMaker") return { title: "Application Requests — you make the certificates", landing: "Certificates", steps: [
+    "Your panel opens on <strong>Certificates</strong>. You're emailed whenever a specialist (or a service engineer, for service trainings) sends you certificate details.",
+    "Each request shows the title, institution, date, venue, trainor and the names, for the Certificate of Appearance, Training Certificate and Training Agenda.",
+    "Tap <strong>⬇ CSV for mail merge</strong>: one row per person with its serial number (RP" + new Date().getFullYear() + "-0001 and up), ready for your Word, PowerPoint or Canva template. Numbers never change on re-download.",
+    "When a document is sent, tap <strong>✓ Mark Done</strong>. The specialist and the requester are emailed that it's ready.",
+  ] };
+  if (r === "Lead" || role === "ApplicationsManager") return { title: "Application Requests — you lead " + (appsTeam ? appsTeam + " Apps" : "the Applications team"), landing: "", steps: [
+    "Under <strong>Applications</strong> in the sidebar, <strong>Application Requests</strong> is your board. You're emailed each new " + (appsTeam || "Applications") + " request.",
+    "If Sales named a specialist, they can take it with <strong>I'm handling this</strong>. Otherwise tap <strong>Assign Specialist</strong> — you'll see who is already booked that day.",
+    "<strong>Apps Schedule</strong> shows every job on a calendar. <strong>Certificates</strong> shows what's with " + cert + ".",
+    "<strong>Feedback Ratings</strong> shows participants' ratings per specialist and per team. <strong>Apps Monthly Report</strong> has the month's jobs, turnaround and ratings, ready to print.",
+    "Jobs that need another visit come back to you as <strong>For Continuation</strong> unless the specialist keeps them.",
+  ] };
+  if (r === "Specialist") return { title: "Application Requests — you're an Applications Specialist", landing: "My Apps Jobs", steps: [
+    "Your panel opens on <strong>My Apps Jobs</strong>, with your jobs and your own calendar. You're emailed when " + chem + " or " + bio + " assigns you, or when Sales names you.",
+    "Named by Sales? Tap <strong>I'm handling this</strong> and set the date, or let your lead assign someone else.",
+    "Before the job, fill the <strong>To-do list</strong> (reagents, machines, worksheet…). You're reminded the day before.",
+    "At trainings, demos and presentations, open <strong>🧾 Attendance & Feedback</strong> and share the two links with the <strong>session code</strong>. Participants sign in and rate the session on their phones.",
+    "After each visit, tap <strong>Log Session</strong>: Done, or Continue if it needs another visit. Troubleshooting and Remote Support need a short report.",
+    "If certificates are needed, tap <strong>🎓 Certificates</strong> and send the details to " + cert + " — names come straight from the attendance. <strong>My Ratings</strong> shows how participants rated you.",
+  ] };
+  return { title: "Application Requests", landing: "", steps: [
+    "Need a demo, training, presentation, troubleshooting, site visit, proof of concept or remote support from the Applications team? Open <strong>My Application Requests</strong> under <strong>Applications</strong> and tap <strong>+ New Application Request</strong>.",
+    "Pick the job type(s), Chemistry or Biology, Paid or Free, the client and the preferred date. Tick the certificates or agenda the client needs.",
+    "Already talked to a specialist? Name them in the form. If not, " + chem + " (Chemistry) or " + bio + " (Biology) assigns someone.",
+    "For a <strong>Proof of Concept</strong>, the form also asks for the sample details (the Sample Analysis Request Form).",
+    "You're emailed when it's assigned and when it's done. Track it any time in <strong>My Application Requests</strong>, and fix client details with <strong>✏️ Edit details</strong>.",
+  ] };
+}
+/** For people who already use RainForce: the Application Requests guide only (password untouched). */
+function arSendAppsGuide(user) {
+  const sec = arWelcomeSection(user);
+  if (!sec || !user.email) return false;
+  const first = shortFirstName(user.fullName) || "there";
+  const html = `<p style="font-size:15px;color:#1f2937;margin:0 0 6px;">Hi ${escHtml(first)}! 👋</p>
+    <p style="font-size:13.5px;color:#374151;margin:0 0 18px;">RainForce now includes <strong>Application Requests</strong> — demos, trainings, presentations, troubleshooting and more by the Applications team. Same link, same login. Look for the <strong>Applications</strong> section in the sidebar.</p>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f8fafc;border-radius:10px;margin-bottom:18px;"><tr><td style="padding:14px 18px;">
+      <table role="presentation" width="100%" style="font-size:14px;">
+        <tr><td style="padding:4px 0;color:#6b7280;width:110px;">Link</td><td style="padding:4px 0;font-weight:800;"><a href="${APP_URL}" style="color:#1d4ed8;text-decoration:none;">${APP_URL}</a></td></tr>
+        <tr><td style="padding:4px 0;color:#6b7280;">Username</td><td style="padding:4px 0;font-weight:800;color:#0a1930;font-family:monospace,monospace;">${escHtml(user.username)}</td></tr>
+        <tr><td style="padding:4px 0;color:#6b7280;">Password</td><td style="padding:4px 0;color:#374151;">Your current password (unchanged)</td></tr>
+      </table></td></tr></table>
+    <p style="font-size:12.5px;color:#374151;margin:0 0 6px;">Already logged in? Log out and back in once so the Applications section appears.</p>
+    <div style="font-size:12px;font-weight:800;color:#0a1930;text-transform:uppercase;letter-spacing:0.4px;margin:20px 0 10px;">${escHtml(sec.title)}</div>
+    ${emailStepsList(sec.steps)}
+    <p style="font-size:13px;color:#374151;margin:20px 0 0;">Forgot your password? Ask your Admin to reset it. If anything's unclear, just reach out.</p>
+    ${EMAIL_SIGNOFF_HTML}`;
+  const plain = `Hi ${first}!\n\nRainForce now includes Application Requests. Same link, same login.\n\nLink: ${APP_URL}\nUsername: ${user.username}\nPassword: your current password (unchanged)\n\n${sec.title.toUpperCase()}\n${emailStepsListPlain(sec.steps)}\n\nForgot your password? Ask your Admin to reset it.`;
+  sendStyledEmail(user.email, "New in RainForce: Application Requests", html, plain);
+  return true;
+}
+/** Resend modal, "Applications" choice: everyone who can use Application Requests. */
+function arWelcomeTargets(scope) {
+  return getRows(SHEETS.USERS).filter(u => srActive(u) && u.Email && ["LogisticsStaff", "LogisticsAdmin", "LogisticsManager"].indexOf(u.Role) === -1)
+    .filter(u => scope === "appsteam" ? (arRoleOf(u) !== "" || u.Role === "ApplicationsManager") : true);
+}
+function adminPreviewResendAppsWelcome(session, scope) {
+  requireRole(session, ["Admin"]);
+  arEnsureReady();
+  const t = arWelcomeTargets(scope);
+  return { ok: true, total: t.length, missing: [], fresh: t.filter(srNeverLoggedIn).map(u => u.FullName), guide: t.filter(u => !srNeverLoggedIn(u)).map(u => u.FullName) };
+}
+function adminResendAppsWelcome(session, scope) {
+  requireRole(session, ["Admin"]);
+  arEnsureReady();
+  let fresh = 0, guide = 0;
+  arWelcomeTargets(scope).forEach(u => {
+    const user = { username: u.Username, fullName: u.FullName, role: u.Role, department: u.Department, email: u.Email,
+      serviceRole: u.ServiceRole || "", appsRole: u.AppsRole || "", appsTeam: u.AppsTeam || "" };
+    if (srNeverLoggedIn(u)) {
+      const temp = generateTempPassword();
+      updateRow(SHEETS.USERS, "Username", u.Username, { PasswordHash: hashPassword(temp), MustChangePassword: "TRUE" });
+      notifyNewUserWelcome(user, temp); fresh++;
+    } else if (arSendAppsGuide(user)) guide++;
+  });
+  logAudit(session.username, "RESENT_APPS_WELCOME", "", scope + ": " + fresh + " welcome, " + guide + " guide");
+  return { ok: true, fresh: fresh, guide: guide };
+}
+
+// ---------------------------------------------------------------------------
+// Admin — Applications role on the Users page
+// ---------------------------------------------------------------------------
+/** Applications role from a form or an upload file. Returns { role, team }, or null if it can't be read.
+ *  Accepts e.g. "Apps Lead", "Lead", "Specialist", "Certificates & Agendas", "CertMaker"; team "Chemistry"/"Chem"/"Biology"/"Bio". */
+function arNormalizeAppsRole(roleRaw, teamRaw) {
+  const k = v => String(v || "").toLowerCase().replace(/[^a-z]/g, "");
+  const r = k(roleRaw), t = k(teamRaw);
+  let role = "";
+  if (r) {
+    if (/lead/.test(r)) role = "Lead";
+    else if (/special/.test(r)) role = "Specialist";
+    else if (/cert|agenda/.test(r)) role = "CertMaker";
+    else if (r === "none") role = "";
+    else return null;
+  }
+  let team = "";
+  if (t) {
+    if (/^chem/.test(t)) team = "Chemistry";
+    else if (/^bio/.test(t)) team = "Biology";
+    else return null;
+  }
+  if (role === "Lead" && !team) return null;
+  if (role === "CertMaker") team = "";
+  return { role: role, team: team };
+}
+function adminSetAppsRole(session, username, appsRole, appsTeam, nickname) {
+  requireRole(session, ["Admin"]);
+  arEnsureReady();
+  if (nickname !== undefined) { srEnsureColumn("Users", "Nickname"); updateRow(SHEETS.USERS, "Username", username, { Nickname: String(nickname || "").trim().slice(0, 40) }); }
+  if (appsRole && AR_ROLES.indexOf(appsRole) === -1) throw new Error("Invalid Applications role.");
+  if (appsTeam && AR_TEAMS.indexOf(appsTeam) === -1) throw new Error("Invalid team.");
+  if (appsRole === "Lead" && !appsTeam) throw new Error("A lead needs a team (Chemistry or Biology).");
+  updateRow(SHEETS.USERS, "Username", username, { AppsRole: appsRole || "", AppsTeam: appsTeam || "" });
+  logAudit(session.username, "SET_APPS_ROLE", "", username + " → " + (appsRole || "none") + (appsTeam ? " / " + appsTeam : ""));
+  return { ok: true };
+}
+
+// ---------------------------------------------------------------------------
+// PUBLIC API — used by the GitHub attendance & feedback pages (no login).
+// Called from doGet (?api=...) and doPost in Code.gs. Only job basics are shared.
+// ---------------------------------------------------------------------------
+function arJsonOut(obj) { return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON); }
+function arPublicApi(p) {
   try {
-    const res = await api({ api: "feedback", code: CODE, data: data });
-    if (!res.ok) throw new Error(res.error || "Something went wrong.");
-    ["whoCard", "rateCard", "moreCard"].forEach(id => $(id).classList.add("hidden"));
-    if (res.updated) $("doneSub").textContent = "Your earlier answers were updated.";
-    if (res.addedToAttendance) $("doneSub").textContent = "Thank you! You've also been added to the attendance, so you'll be included in the certificates.";
-    $("doneCard").classList.remove("hidden"); window.scrollTo(0, 0);
+    arEnsureReady();
+    p = p || {};
+    if (typeof p.data === "string") { try { p.data = JSON.parse(p.data); } catch (e) { p.data = {}; } }
+    // No code in the link: list recent sessions so participants can pick theirs (title + institution only).
+    if (String(p.api || p.action) === "sessions") return arJsonOut(arPublicSessions(Number(p.days) || 0));
+    const code = String(p.code || p.c || "").trim().toUpperCase();
+    let row = code ? getRows(AR_SHEET).find(r => r.AttendanceCode === code) : null;
+    if (row && arIsSvc(row)) { try { row = arSvcSync(row.LinkedID) || row; } catch (e) { /* keep what we have */ } }   // service job moved? show the new date
+    if (!row || row.Status === "Cancelled") return arJsonOut({ ok: false, error: "This link isn't valid. Please ask the RainPhil specialist for the correct one." });
+    const info = srJson(row.CertInfoJSON, {});
+    const trainors = [row.SpecialistName].concat(arCrew(row).map(t => t.name)).filter(Boolean);
+    const job = {
+      code: code, requestId: row.RequestID, title: info.title || row.Topic || arTypesOf(row).join(" & "),
+      jobType: row.JobType, institution: row.Institution, venue: info.venue || row.Address || "",
+      date: row.ScheduledDate ? srIsoDate(stripTime(new Date(row.ScheduledDate))) : "",
+      endDate: row.EndDate ? srIsoDate(stripTime(new Date(row.EndDate))) : "", trainors: trainors,
+    };
+    const action = String(p.api || p.action || "job");
+    if (action === "job") return arJsonOut({ ok: true, job: job });
+    if (action === "attend") return arJsonOut(arPublicAttend(row, code, p.data || {}));
+    if (action === "lookup") return arJsonOut(arPublicLookup(row, String(p.name || "")));
+    if (action === "feedback") return arJsonOut(arPublicFeedback(row, code, p.data || {}, trainors));
+    return arJsonOut({ ok: false, error: "Unknown request." });
   } catch (e) {
-    showErr(e.message || "We couldn't reach the server. Please check your connection and try again.");
-  } finally { btn.disabled = false; btn.textContent = "Submit"; }
+    return arJsonOut({ ok: false, error: String(e && e.message || e) });
+  }
+}
+/** Sessions running today (days=0) or within the last N days — only jobs that collect attendance. */
+function arPublicSessions(days) {
+  days = Math.max(0, Math.min(14, days || 0));
+  const today = stripTime(new Date());
+  const from = new Date(today.getTime() - days * 86400000);
+  const kinds = ["Presentation", "Demonstration", "Training"];
+  const list = getRows(AR_SHEET).filter(r => {
+    if (!r.AttendanceCode || r.Status === "Cancelled" || r.Status === "Submitted" || !r.ScheduledDate) return false;
+    if (!arTypesOf(r).some(t => kinds.indexOf(t) !== -1)) return false;
+    const start = stripTime(new Date(r.ScheduledDate)), end = r.EndDate ? stripTime(new Date(r.EndDate)) : start;
+    return start <= today && end >= from;
+  }).map(r => {
+    const info = srJson(r.CertInfoJSON, {});
+    return { code: r.AttendanceCode, title: info.title || r.Topic || arTypesOf(r).join(" & "), institution: r.Institution,
+      date: srIsoDate(stripTime(new Date(r.ScheduledDate))), time: r.ScheduledTime ? srTimeLabel(r.ScheduledTime) : "" };
+  }).sort((a, b) => (b.date + b.time).localeCompare(a.date + a.time));
+  return { ok: true, sessions: list };
+}
+/** "juan dela cruz" / "JUAN DELA CRUZ" → "Juan Dela Cruz" (names go on certificates). Mixed case is kept as typed. */
+function arTidyName(s) {
+  s = arCleanStr(s, 80).replace(/\s+/g, " ");
+  if (s !== s.toLowerCase() && s !== s.toUpperCase()) return s;
+  return s.toLowerCase().replace(/(^|[\s\-'.])([a-z\u00f1])/g, (m, p, c) => p + c.toUpperCase());
+}
+// ---------------------------------------------------------------------------
+// Everyone who took part ends up on the attendance (and so on the Training Certificate):
+// signed the attendance, answered the feedback without signing, or was added by the specialist.
+// ---------------------------------------------------------------------------
+/** Create an attendance record (caller holds the lock). Returns the record. */
+function arMakeAttendee(row, code, o, via) {
+  const parts = arTidyName(o.fullName).split(" ").filter(Boolean);
+  const last = parts.length > 1 ? parts.pop() : "", first = parts.join(" ") || last;
+  const rec = { AttendeeID: "AT-" + Utilities.getUuid().slice(0, 8).toUpperCase(), Timestamp: o.at || new Date(), RequestID: row.RequestID, Code: code || row.AttendanceCode,
+    FullName: arTidyName(o.fullName), FirstName: first, LastName: last, Email: arCleanStr(o.email, 150), Mobile: arCleanStr(o.mobile, 40),
+    Institution: arCleanStr(o.institution, 200) || row.Institution, Department: "", Position: "", AnswersJSON: "{}", AddedVia: via };
+  appendRow(SS.getSheetByName(AR_ATT_SHEET), rec);
+  return rec;
+}
+/** Feedback answered without signing the attendance → match by name, or add them to the attendance. Fixes old feedback too. */
+function arLinkFeedbackOnly(row) {
+  const att = getRows(AR_ATT_SHEET).filter(a => a.RequestID === row.RequestID);
+  const orphans = getRows(AR_FB_SHEET).filter(f => f.RequestID === row.RequestID && (!f.AttendeeID || !att.some(a => a.AttendeeID === f.AttendeeID)) && f.FullName);
+  if (!orphans.length) return [];
+  const added = [];
+  orphans.forEach(f => {
+    let a = att.find(x => arNameKey(x.FullName) === arNameKey(f.FullName));
+    if (!a) {
+      const ans = srJson(f.AnswersJSON, {});
+      a = arMakeAttendee(row, f.Code, { fullName: f.FullName, email: f.Email, institution: f.Institution, mobile: ans["Phone Number"] || "", at: f.Timestamp }, "Feedback form");
+      att.push(a); added.push(a.FullName);
+    }
+    updateRow(AR_FB_SHEET, "FeedbackID", f.FeedbackID, { AttendeeID: a.AttendeeID });
+  });
+  if (added.length) arCertAddNames(row.RequestID, added, "answered the feedback");
+  return added;
+}
+/**
+ * New names on the attendance after the certificate details were already filled in or sent:
+ * add them to the Training Certificate list. If Carlo already has it (or finished it), it goes back to him marked (updated).
+ */
+function arCertAddNames(id, names, why) {
+  const row = arGet(id), certs = arCertsOf(row), c = certs.TrainingCert;
+  if (!c || !c.needed) return;
+  const list = c.names || [];
+  if (!list.length && !c.state) return;   // names not picked yet — they'll come from the attendance when the specialist sends
+  const fresh = names.filter(n => !list.some(x => arNameKey(x) === arNameKey(n)));
+  if (!fresh.length) return;
+  c.names = list.concat(fresh);
+  const withCarlo = c.state === "Pending" || c.state === "Done";
+  if (withCarlo) Object.assign(c, { state: "Pending", resent: true, doneAt: "", doneBy: "", sentAt: new Date().toISOString() });
+  const status = arCertStatus(certs);
+  updateRow(AR_SHEET, "RequestID", id, { CertsJSON: JSON.stringify(certs), CertStatus: status, DateCertsDone: status === "Done" ? row.DateCertsDone : "",
+    HistoryJSON: srHistory(row, "RainForce", "Added to Training Certificate", fresh.join(", ") + " — " + why) });
+  if (withCarlo) {
+    const makers = arCertMakers().map(x => x.Email).filter(Boolean);
+    if (makers.length) arMail(row, {
+      to: makers, cc: arJobEmails(row), subject: "Name added to Training Certificate: " + arTag(row),
+      banner: "🎓 " + fresh.length + " more name" + (fresh.length === 1 ? "" : "s") + " for the Training Certificate", color: "#92400e", bg: "#fef3c7",
+      intro: "Added because they " + escHtml(why) + ": <strong>" + fresh.map(escHtml).join(", ") + "</strong>.",
+      introPlain: "Added to the Training Certificate (" + why + "): " + fresh.join(", "),
+      next: "Make their certificate — the request is back in <strong>Certificates</strong> marked (updated).",
+    });
+  }
+}
+/**
+ * TROUBLESHOOTING — run from the Apps Script editor: pick checkFeedbackAttendance, then Run.
+ * Change the job number below first. The log (View ▸ Logs / Execution log) shows every feedback
+ * for that job, whether it's on the attendance, and adds the missing ones.
+ */
+function checkFeedbackAttendance(requestId) {
+  requestId = requestId || "AR-00001";   // ← put the job number here
+  arEnsureReady();
+  const row = arGet(requestId);
+  const att = getRows(AR_ATT_SHEET).filter(a => a.RequestID === requestId);
+  const fb = getRows(AR_FB_SHEET).filter(f => f.RequestID === requestId);
+  Logger.log(requestId + " — " + att.length + " on the attendance, " + fb.length + " feedback");
+  fb.forEach(f => Logger.log("  feedback: " + f.FullName + " | AttendeeID: " + (f.AttendeeID || "(none)") + " | on attendance: " + att.some(a => a.AttendeeID === f.AttendeeID)));
+  const added = srWithLock(() => arLinkFeedbackOnly(row));
+  Logger.log("Added to the attendance now: " + (added.length ? added.join(", ") : "nobody (everyone was already on it)"));
+  const tc = arCertsOf(arGet(requestId)).TrainingCert;
+  Logger.log("Training Certificate: " + (tc ? (tc.needed ? "needed · state " + (tc.state || "not sent") + " · names: " + (tc.names || []).join(", ") : "not needed") : "not ticked for this job"));
+}
+// ---------------------------------------------------------------------------
+// FEEDBACK REMINDER — "Send reminder" in the Attendance & Feedback window emails every
+// participant on the attendance who hasn't answered: feedback first, then the certificate.
+// Specialists on the job, the requester (job owner), leads and Admin can send it.
+// ---------------------------------------------------------------------------
+function arFeedbackPending(row) {
+  const fb = getRows(AR_FB_SHEET).filter(f => f.RequestID === row.RequestID);
+  return getRows(AR_ATT_SHEET).filter(a => a.RequestID === row.RequestID)
+    .filter(a => !fb.some(f => (f.AttendeeID && f.AttendeeID === a.AttendeeID) || arNameKey(f.FullName) === arNameKey(a.FullName)));
+}
+function arSendFeedbackReminders(session, id) {
+  const u = arUser(session);
+  const row = arGet(id);
+  const allowed = u.Role === "Admin" || row.RequestorUsername === u.Username || arOnJob(row, u.Username) || arCanManageRow(u, row);
+  if (!allowed) throw new Error("Only the specialist on this job, the requester, the lead or Admin can send reminders.");
+  if (row.Status === "Cancelled") throw new Error("This job was cancelled.");
+  const pending = arFeedbackPending(row);
+  if (!pending.length) return { ok: true, sent: 0, noEmail: [], message: "Everyone on the attendance has answered the feedback." };
+  const info = srJson(row.CertInfoJSON, {});
+  const title = info.title || row.Topic || arTypesOf(row).join(" & ");
+  const when = row.ScheduledDate ? fmtDateForEmail(new Date(row.ScheduledDate)) : "";
+  const link = arPageUrl("APPS_FEEDBACK_URL", "feedback");   // plain page; they pick the session or type the code
+  const certs = arCertsOf(row), givesCert = certs.TrainingCert && certs.TrainingCert.needed;
+  const sentTo = [], noEmail = [];
+  pending.forEach(a => {
+    const email = String(a.Email || "").trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { noEmail.push(a.FullName); return; }
+    const first = shortFirstName(a.FullName) || "there";
+    const team = [row.SpecialistName].concat(arCrew(row).map(t => t.name)).filter(Boolean).map(n => callName({ FullName: n, Nickname: (getRows(SHEETS.USERS).find(x => x.FullName === n) || {}).Nickname }));
+    const fromLine = team.length ? team.join(" & ") + " and the RainPhil Applications Team" : "The RainPhil Applications Team";
+    const subject = givesCert ? "One last step for your certificate 🎓 — " + title : "We'd love to hear from you — " + title;
+    const html = `<p style="font-size:15px;color:#1f2937;margin:0 0 10px;">Hi ${escHtml(first)}! 👋</p>
+      <p style="font-size:14px;color:#374151;line-height:1.7;margin:0 0 12px;">Thank you so much for joining us at <strong>${escHtml(title)}</strong>${when ? " on " + escHtml(when) : ""}. It was a pleasure having you. We hope you picked up something useful for your work.</p>
+      <p style="font-size:14px;color:#374151;line-height:1.7;margin:0 0 16px;">${givesCert
+        ? "Your <strong>certificate is almost ready</strong> — we just need one small thing from you: a quick feedback form. It only takes about 2 minutes, and once it's in, we'll get your certificate to you."
+        : "Would you mind sharing a bit of feedback? It only takes about 2 minutes, and it really helps us make every session better."}</p>
+      <table role="presentation" cellpadding="0" cellspacing="0" style="margin:4px 0 18px;"><tr><td style="background:#0a1930;border-radius:10px;">
+        <a href="${link}" style="display:inline-block;padding:13px 24px;color:#ffffff;font-weight:800;text-decoration:none;font-size:14.5px;">${givesCert ? "Share my feedback & get my certificate →" : "Share my feedback →"}</a></td></tr></table>
+      <p style="font-size:13px;color:#6b7280;line-height:1.6;margin:0 0 6px;">On the page, tap <strong style="color:#0a1930;">${escHtml(title)}</strong>. If it isn't on the list, type the session code <strong style="color:#0a1930;letter-spacing:2px;">${escHtml(row.AttendanceCode || "")}</strong>. Then find your name as you wrote it on the attendance.</p>
+      <p style="font-size:14px;color:#374151;line-height:1.7;margin:16px 0 0;">Thank you again — we're always happy to help, so don't hesitate to reach out if you have questions about what we covered.</p>
+      <p style="font-size:14px;color:#374151;margin:14px 0 0;">Warm regards,<br><strong>${escHtml(fromLine)}</strong></p>
+      <p style="font-size:12px;color:#9ca3af;margin:16px 0 0;">Button not working? Open the <a href="${link}" style="color:#1d4ed8;">Applications Feedback Form</a>.</p>`;
+    arSend({ to: [email], subject: subject, html: html, row: row, client: true,
+      plain: "Hi " + first + "!\n\nThank you so much for joining us at " + title + (when ? " on " + when : "") + ". It was a pleasure having you, and we hope you picked up something useful for your work.\n\n" +
+        (givesCert ? "Your certificate is almost ready — we just need a quick feedback form from you (about 2 minutes). Once it's in, we'll get your certificate to you."
+                   : "Would you mind sharing a bit of feedback? It only takes about 2 minutes and really helps us make every session better.") +
+        "\n\nApplications Feedback Form: " + link + "\nTap " + title + ". If it isn't on the list, type the session code " + (row.AttendanceCode || "") + ". Then find your name as you wrote it on the attendance." +
+        "\n\nThank you again — don't hesitate to reach out if you have questions.\n\nWarm regards,\n" + fromLine });
+    updateRow(AR_ATT_SHEET, "AttendeeID", a.AttendeeID, { FeedbackRemindedAt: new Date(), FeedbackReminders: (Number(a.FeedbackReminders) || 0) + 1 });
+    sentTo.push(a.FullName);
+  });
+  if (sentTo.length) arUpdate(id, { HistoryJSON: srHistory(row, u.FullName, "Feedback reminder sent", sentTo.length + " participant" + (sentTo.length === 1 ? "" : "s") + ": " + sentTo.join(", ")) });
+  logAudit(u.Username, "AR_FEEDBACK_REMINDER", id, sentTo.length + " sent, " + noEmail.length + " without email");
+  return { ok: true, sent: sentTo.length, names: sentTo, noEmail: noEmail };
+}
+/** Specialist adds someone who neither signed nor answered (e.g. no phone). */
+function arAddAttendee(session, id, o) {
+  const u = arUser(session);
+  return srWithLock(() => {
+    const row = arGet(id);
+    arRequireJobOrManager(u, row);
+    o = o || {};
+    const name = arTidyName(o.fullName);
+    if (name.split(" ").filter(Boolean).length < 2) throw new Error("Type the participant's full name.");
+    if (getRows(AR_ATT_SHEET).some(a => a.RequestID === id && arNameKey(a.FullName) === arNameKey(name))) throw new Error(name + " is already on the attendance.");
+    if (o.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(o.email).trim())) throw new Error("Check the email address.");
+    const rec = arMakeAttendee(row, row.AttendanceCode, o, "Added by " + u.FullName);
+    arCertAddNames(id, [rec.FullName], "were added by " + u.FullName);
+    return { ok: true, name: rec.FullName };
+  });
+}
+function arNameKey(s) { return String(s || "").toLowerCase().replace(/[^a-z]/g, ""); }
+function arPublicAttend(row, code, d) {
+  // The page may send one "Full Name" box (like the MS Form) or separate first/last names.
+  let first = arTidyName(d.firstName), last = arTidyName(d.lastName);
+  if ((!first || !last) && d.fullName) {
+    const parts = arTidyName(d.fullName).split(" ").filter(Boolean);
+    if (parts.length >= 2) { last = parts.pop(); first = parts.join(" "); }
+  }
+  if (!first || !last) return { ok: false, error: "Please enter your full name (first and last name)." };
+  const email = arCleanStr(d.email, 150);
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { ok: false, error: "Please check your email address." };
+  const answers = {};
+  Object.keys(d.answers || {}).slice(0, 40).forEach(k => { answers[arCleanStr(k, 80)] = arCleanStr(d.answers[k], 1000); });
+  const full = (first + " " + last).replace(/\s+/g, " ");
+  return srWithLock(() => {
+    const existing = getRows(AR_ATT_SHEET).find(a => a.RequestID === row.RequestID && arNameKey(a.FullName) === arNameKey(full));
+    const rec = { Timestamp: new Date(), RequestID: row.RequestID, Code: code, FullName: full, FirstName: first, LastName: last,
+      Email: email, Mobile: arCleanStr(d.mobile, 40), Institution: arCleanStr(d.institution, 200) || row.Institution,
+      Department: arCleanStr(d.department, 150), Position: arCleanStr(d.position, 150), AnswersJSON: JSON.stringify(answers) };
+    if (existing) {
+      updateRow(AR_ATT_SHEET, "AttendeeID", existing.AttendeeID, rec);
+      return { ok: true, updated: true, name: shortFirstName(first) };
+    }
+    rec.AttendeeID = "AT-" + Utilities.getUuid().slice(0, 8).toUpperCase();
+    rec.AddedVia = "Attendance page";
+    appendRow(SS.getSheetByName(AR_ATT_SHEET), rec);
+    arCertAddNames(row.RequestID, [full], "signed the attendance late");
+    return { ok: true, name: shortFirstName(first) };
+  });
+}
+/** Feedback page: find yourself by name. Only masked contact details are returned. */
+function arPublicLookup(row, name) {
+  const key = arNameKey(name);
+  if (key.length < 3) return { ok: false, error: "Type at least your first name." };
+  const mask = e => { const m = String(e || "").match(/^(.)(.*)(@.*)$/); return m ? m[1] + m[2].replace(/./g, "•") + m[3] : ""; };
+  const done = getRows(AR_FB_SHEET).filter(f => f.RequestID === row.RequestID).map(f => f.AttendeeID);
+  const hits = getRows(AR_ATT_SHEET).filter(a => a.RequestID === row.RequestID && arNameKey(a.FullName).indexOf(key) !== -1).slice(0, 8)
+    .map(a => ({ id: a.AttendeeID, name: a.FullName, institution: a.Institution, position: a.Position, email: mask(a.Email), answered: done.indexOf(a.AttendeeID) !== -1 }));
+  return { ok: true, matches: hits };
+}
+function arPublicFeedback(row, code, d, trainors) {
+  let att = d.attendeeId ? getRows(AR_ATT_SHEET).find(a => a.AttendeeID === d.attendeeId && a.RequestID === row.RequestID) : null;
+  const name = att ? att.FullName : arTidyName(arCleanStr(d.fullName, 160));
+  if (!name) return { ok: false, error: "Please find your name or type it in." };
+  if (!att && name.split(" ").filter(Boolean).length < 2) return { ok: false, error: "Please type your full name (first and last name)." };
+  let newAttendee = false;
+  const nums = [];
+  const cleanRatings = obj => {
+    const out = {};
+    Object.keys(obj || {}).slice(0, 30).forEach(k => {
+      const v = Number(obj[k]);
+      if (!isNaN(v) && v >= 1 && v <= 5) { out[arCleanStr(k, 120)] = v; nums.push(v); }
+    });
+    return out;
+  };
+  const ratings = cleanRatings(d.ratings);
+  const tr = {};
+  Object.keys(d.trainorRatings || {}).forEach(t => { if (trainors.indexOf(t) !== -1) tr[t] = cleanRatings(d.trainorRatings[t]); });
+  const answers = {};
+  Object.keys(d.answers || {}).slice(0, 40).forEach(k => {
+    const v = d.answers[k];
+    answers[arCleanStr(k, 120)] = Array.isArray(v) ? v.map(x => arCleanStr(x, 200)).slice(0, 20) : arCleanStr(v, 2000);
+  });
+  const avg = nums.length ? Math.round(nums.reduce((a, b) => a + b, 0) / nums.length * 100) / 100 : "";
+  return srWithLock(() => {
+    // Didn't sign the attendance? Match by name, or put them on it now — so they still get their Training Certificate.
+    if (!att) {
+      att = getRows(AR_ATT_SHEET).find(a => a.RequestID === row.RequestID && arNameKey(a.FullName) === arNameKey(name));
+      if (!att) { att = arMakeAttendee(row, code, { fullName: name, email: d.email, institution: d.institution, mobile: (d.answers || {})["Phone Number"] || "" }, "Feedback form"); newAttendee = true; }
+    }
+    const rec = { Timestamp: new Date(), RequestID: row.RequestID, Code: code, AttendeeID: att ? att.AttendeeID : "",
+      FullName: name, Email: att ? att.Email : arCleanStr(d.email, 150), Institution: att ? att.Institution : arCleanStr(d.institution, 200),
+      RatingsJSON: JSON.stringify(ratings), TrainorRatingsJSON: JSON.stringify(tr), AnswersJSON: JSON.stringify(answers),
+      Comments: arCleanStr(d.comments, 3000), AvgScore: avg };
+    const prev = att ? getRows(AR_FB_SHEET).find(f => f.RequestID === row.RequestID && f.AttendeeID === att.AttendeeID) : null;
+    if (prev) { updateRow(AR_FB_SHEET, "FeedbackID", prev.FeedbackID, rec); return { ok: true, updated: true }; }
+    rec.FeedbackID = "FB-" + Utilities.getUuid().slice(0, 8).toUpperCase();
+    appendRow(SS.getSheetByName(AR_FB_SHEET), rec);
+    if (newAttendee) arCertAddNames(row.RequestID, [att.FullName], "answered the feedback");
+    return { ok: true, addedToAttendance: newAttendee };
+  });
 }
 
-
-/* ---- opened without ?c=CODE: pick the session from a list, or type the code ---- */
-function openCode(c) { c = String(c || "").trim().toUpperCase(); if (c) location.search = "?c=" + encodeURIComponent(c); }
-async function showPicker() {
-  $("brand").textContent = CONFIG.company;
-  $("loading").innerHTML = `<h2>Which session are you in?</h2>
-    <p class="sub">Tap your session below, or type the code the RainPhil specialist gave you.</p>
-    <div id="sessList"><p class="sub">Loading sessions…</p></div>
-    <label>Session code</label>
-    <div style="display:flex;gap:8px;"><input type="text" id="codeIn" placeholder="e.g. 8R86Y4" maxlength="8" autocapitalize="characters"
-      style="text-transform:uppercase;letter-spacing:.15em;font-weight:800;" onkeydown="if(event.key==='Enter')openCode(this.value)">
-      <button class="btn" style="width:auto;margin:0;padding:0 20px;" onclick="openCode($('codeIn').value)">Go</button></div>`;
-  try {
-    const res = await api({ api: "sessions", days: 45 }, "GET");
-    const list = res.ok ? res.sessions : [];
-    $("sessList").innerHTML = list.length ? list.map(x => `<div class="match" onclick="openCode('${esc(x.code)}')">
-        <div><strong>${esc(x.title)}</strong><br><small>${esc([x.institution, fmtDate(x.date), x.time].filter(Boolean).join(" · "))}</small></div>
-        <span class="pill">Open →</span></div>`).join("")
-      : `<p class="sub">No sessions are listed for ${45 ? "the past 45 days" : "today"}. Please type the code instead.</p>`;
-  } catch (e) { $("sessList").innerHTML = '<p class="sub">Couldn\'t load the sessions. Please type the code instead.</p>'; }
+// ---------------------------------------------------------------------------
+// DAILY CHECK — called from dailyReminderAndExpiryCheck() in Code.gs
+// ---------------------------------------------------------------------------
+function arDailyCheck() {
+  arEnsureReady();
+  const today = stripTime(new Date()), todayKey = srIsoDate(today);
+  const unassignedDays = Number(getConfigValue("AR_UnassignedRemindDays", 2)) || 2;
+  const certDays = Number(getConfigValue("AR_CertRemindDays", 3)) || 3;
+  getRows(AR_SHEET).forEach(row => {
+    if (row.Status === "Cancelled") return;
+    const rem = srJson(row.RemindersJSON, {});
+    const sentOn = (k, every) => rem[k] && srDiff(srDay(rem[k]), today) < every;
+    let touched = false;
+    const mark = k => { rem[k] = todayKey; touched = true; };
+    const svc = arIsSvc(row);
+    if (svc) { try { row = arSvcSync(row.LinkedID) || row; } catch (e) { /* service job removed */ } if (row.Status === "Cancelled") return; }
+    try {
+      // 1) Waiting for a specialist
+      if (!svc && (row.Status === "Submitted" || row.Status === "ForContinuation")) {
+        const since = srDay(srJson(row.HistoryJSON, []).slice(-1)[0] ? srJson(row.HistoryJSON, []).slice(-1)[0].at : row.DateRequested);
+        const waited = since ? srDiff(since, today) : 0;
+        if (waited >= unassignedDays && !sentOn("unassigned", unassignedDays)) {
+          arMail(row, {
+            to: arLeadEmails(row.Team), cc: row.ProposedUsername ? [(arFindUser(row.ProposedUsername) || {}).Email] : [],
+            subject: "Still unassigned (" + waited + " days): " + arTag(row), banner: "⏳ Waiting " + waited + " days for a specialist",
+            intro: row.Status === "ForContinuation" ? "This job needs another visit and is waiting for you to assign it." :
+              (row.ProposedName ? `Sales named <strong>${escHtml(row.ProposedName)}</strong>, who hasn't taken it yet.` : "Nobody has been assigned to this request yet."),
+            introPlain: "Waiting " + waited + " days for a specialist.", next: "Assign a specialist in <strong>Application Requests</strong>.",
+            color: "#92400e", bg: "#fef3c7",
+          });
+          mark("unassigned");
+        }
+      }
+      // 2) Day-before reminder to the specialist, with the open to-do items
+      if (!svc && row.Status === "Scheduled" && row.ScheduledDate && srDiff(today, srDay(row.ScheduledDate)) === 1 && rem.dayBefore !== srIsoDate(srDay(row.ScheduledDate))) {
+        const open = srJson(row.TodoJSON, []).filter(t => !t.done);
+        arMail(row, {
+          to: arJobEmails(row), subject: "Tomorrow: " + arTag(row), banner: "📅 Tomorrow — " + arWhen(row),
+          intro: open.length ? `You still have <strong>${open.length}</strong> item${open.length === 1 ? "" : "s"} to prepare:` : "Everything on your to-do list is ticked. Good to go!",
+          introPlain: open.length ? open.length + " to-do item(s) still open." : "To-do list complete.",
+          extraHtml: open.length ? arTodoHtml(open) : "",
+        });
+        rem.dayBefore = srIsoDate(srDay(row.ScheduledDate)); touched = true;
+      }
+      // 3) Date passed, nothing logged — ask for an update (day after, then every 3 days)
+      if (!svc && (row.Status === "Scheduled" || row.Status === "InProgress") && row.ScheduledDate) {
+        const last = srDay(row.EndDate) || srDay(row.ScheduledDate);
+        const late = srDiff(last, today);
+        if (late >= 1 && !sentOn("update", 3)) {
+          arMail(row, {
+            to: arJobEmails(row), cc: late >= 7 ? arLeadEmails(row.Team) : [],
+            subject: "Update needed: " + arTag(row), banner: "🕑 The job date passed " + late + " day" + (late === 1 ? "" : "s") + " ago",
+            intro: "Please log what happened — job done, or needs another visit." + (arNeedsReport(row) ? " This job needs a report." : ""),
+            introPlain: "The job date passed " + late + " day(s) ago. Please log the session.",
+            next: "Open <strong>My Apps Jobs</strong> ▸ <strong>Log Session</strong>.", color: "#92400e", bg: "#fef3c7",
+          });
+          mark("update");
+        }
+      }
+      // 4) Certificates: done job with certs not sent yet → specialist; pending with the cert maker → cert maker
+      const certs = arCertsOf(row), cs = arCertStatus(certs);
+      if (row.Status === "Completed" && cs === "ToSend" && !sentOn("certSend", certDays)) {
+        arMail(row, {
+          to: arJobEmails(row), subject: "Certificates not sent yet: " + arTag(row), banner: "🎓 Send the certificate details to " + arCertMakerName(),
+          intro: "This job is done but the certificate / agenda request hasn't gone to " + escHtml(arCertMakerName()) + " yet.",
+          introPlain: "Certificates not sent to " + arCertMakerName() + " yet.",
+          next: svc ? "Open the service job ▸ <strong>🎓 Training & Certificates</strong>." : "Open the job ▸ <strong>Certificates</strong>.",
+        });
+        mark("certSend");
+      }
+      const pending = AR_CERTS.filter(c => certs[c.key] && certs[c.key].state === "Pending" && certs[c.key].sentAt && srDiff(srDay(certs[c.key].sentAt), today) >= certDays);
+      if (pending.length && !sentOn("certMaker", certDays)) {
+        arMail(row, {
+          to: arCertMakers().map(x => x.Email), cc: arJobEmails(row),
+          subject: "Reminder: " + pending.map(c => c.label).join(", ") + " — " + arTag(row), banner: "🎓 Still to make",
+          intro: "These are still waiting: <strong>" + pending.map(c => c.label).join(", ") + "</strong>.",
+          introPlain: "Still waiting: " + pending.map(c => c.label).join(", "),
+          extraHtml: arCertRequestHtml(row, pending), next: "Mark them done in <strong>Certificates</strong>.",
+        });
+        mark("certMaker");
+      }
+    } catch (e) { Logger.log("Apps daily check " + row.RequestID + ": " + e); }
+    if (touched) arUpdate(row.RequestID, { RemindersJSON: JSON.stringify(rem) });
+  });
+  if (typeof rlDailyCheck === "function") { try { rlDailyCheck(); } catch (e) { Logger.log("RAINLAB daily check: " + e); } }
 }
 
-(async function init() {
-  CONFIG.webAppUrl = String(CONFIG.webAppUrl || "").trim().replace(/[?#].*$/, "");
-  if (/PASTE_YOUR/i.test(CONFIG.webAppUrl) || !CONFIG.webAppUrl) return fatal("This page isn't set up yet — the Web App URL in this file is still empty. (Page version 3)");
-  if (!/^https:\/\/script\.google\.com\/.+\/exec$/.test(CONFIG.webAppUrl)) return fatal("The Web App URL in this file doesn't look right. It should start with https://script.google.com/ and end with /exec. Found: " + CONFIG.webAppUrl + " (Page version 3)");
-  if (!CODE) return showPicker();
+// ---------------------------------------------------------------------------
+// Emails
+// ---------------------------------------------------------------------------
+function arTag(row) { return `${row.RequestID} — ${row.Institution}`; }
+function arWhen(row) {
+  return fmtDateForEmail(row.ScheduledDate) + (row.EndDate && srDiff(srDay(row.ScheduledDate), srDay(row.EndDate)) > 0 ? " to " + fmtDateForEmail(row.EndDate) : "") +
+    (row.ScheduledTime ? " at " + srTimeLabel(row.ScheduledTime) : "");
+}
+function arSend(o) {
+  const off = typeof srInactiveEmails === "function" ? srInactiveEmails() : [];
+  const keep = e => e && off.indexOf(String(e).toLowerCase()) === -1;
+  let to = uniqueRecipients((o.to || []).filter(keep));
+  let cc = uniqueRecipients((o.cc || []).filter(keep)).filter(e => to.indexOf(e) === -1);
+  if (!to.length) { to = cc; cc = []; }
+  if (!to.length) return;
+  // client-facing emails (participants): RainPhil branding, no internal sign-off
+  let shell = emailShell(o.html);
+  if (o.client) shell = shell.replace(">RainPhil Inc.</div>", ">Applications Team</div>").replace(">RainForce</div>", ">RainPhil Inc.</div>")
+    .replace(/RainForce · RainPhil Inc\. · One place for every request\./, "RainPhil Inc. · Your Biomedical Research &amp; Laboratory Partners");
+  else shell = shell.replace(">RainForce</div>", ">RainForce · " + (o.brand || "Applications") + "</div>");
   try {
-    const res = await api({ api: "job", code: CODE }, "GET");
-    if (!res.ok) return fatal(res.error);
-    JOB = res.job; render();
-  } catch (e) { fatal("We couldn't load this session. Please check your connection and refresh."); }
-})();
-</script>
-</body>
-</html>
+    const msg = { to: to, cc: cc, subject: o.subject, body: o.plain + (o.client ? "" : EMAIL_SIGNOFF), htmlBody: shell,
+      name: o.client ? "RainPhil Applications" : "RainForce " + (o.brand || "Applications") };
+    const how = typeof sendMail_ === "function" ? sendMail_(msg) : (MailApp.sendEmail(Object.assign({}, msg, { to: to.join(","), cc: cc.join(",") })), "gmail");
+    if (how === "queued") logAudit("system", "AR_EMAIL_QUEUED", o.row ? o.row.RequestID : "", o.subject);
+  } catch (e) {
+    Logger.log("Apps email failed: " + e);
+    logAudit("system", "AR_EMAIL_FAILED", o.row ? o.row.RequestID : "", String(e));
+  }
+}
+function arProductsText(row) { return srJson(row.ProductsJSON, []).map(p => (p.brand + " " + p.model).trim() + (p.qty > 1 ? " ×" + p.qty : "")).join(", "); }
+function arDetailsCard(row) {
+  const tr = (k, v) => v ? `<tr><td style="padding:3px 0;color:#6b7280;vertical-align:top;">${k}</td><td style="padding:3px 0;text-align:right;color:#0a1930;">${v}</td></tr>` : "";
+  const certs = arCertsOf(row);
+  const certTxt = AR_CERTS.filter(c => certs[c.key] && certs[c.key].needed).map(c => c.label).join(", ");
+  return `<table width="100%" cellpadding="0" cellspacing="0" style="background:#f8fafc;border-radius:10px;margin:6px 0 14px;">
+    <tr><td style="padding:14px 16px;"><table width="100%" style="font-size:12.5px;">
+      ${tr("Request ID", "<strong>" + escHtml(row.RequestID) + "</strong>")}
+      ${tr("Job", escHtml(row.JobType))}
+      ${tr("Topic", escHtml(row.Topic || ""))}
+      ${tr("Team", escHtml(row.Team + " Apps"))}
+      ${tr("Payment", escHtml(row.PaymentType))}
+      ${tr("Institution", "<strong>" + escHtml(row.Institution) + "</strong>" + (row.ClientDepartment ? " — " + escHtml(row.ClientDepartment) : ""))}
+      ${tr("Address / venue", escHtml(row.Address))}
+      ${tr("Contact", escHtml(row.ContactPerson) + " · " + escHtml(row.ContactNumber) + (row.ContactEmail ? " · " + escHtml(row.ContactEmail) : ""))}
+      ${tr("Products", escHtml(arProductsText(row)))}
+      ${tr("Preferred date", fmtDateForEmail(row.PreferredDate) + (row.DateFlexible === "Yes" ? " (flexible)" : ""))}
+      ${tr("Scheduled", row.ScheduledDate && row.Status !== "Submitted" ? "<strong>" + arWhen(row) + "</strong>" : "")}
+      ${tr("Specialist", escHtml(arJobNames(row)))}
+      ${tr("Account in charge", escHtml(row.AccountName || ""))}
+      ${tr("Certificates", escHtml(certTxt))}
+      ${tr("Request note", escHtml(row.Notes || ""))}
+      ${tr("Lead's note", row.AssignNote ? "<strong>" + escHtml(row.AssignNote) + "</strong>" : "")}
+    </table></td></tr></table>`;
+}
+function arPlain(row) {
+  return `${row.RequestID} — ${row.JobType} (${row.Team} Apps, ${row.PaymentType})
+Institution: ${row.Institution}${row.ClientDepartment ? " — " + row.ClientDepartment : ""}
+Address / venue: ${row.Address}
+Contact: ${row.ContactPerson} · ${row.ContactNumber}${row.ContactEmail ? " · " + row.ContactEmail : ""}${row.Topic ? "\nTopic: " + row.Topic : ""}${arProductsText(row) ? "\nProducts: " + arProductsText(row) : ""}
+Preferred date: ${fmtDateForEmail(row.PreferredDate)}${row.ScheduledDate && row.Status !== "Submitted" ? "\nScheduled: " + arWhen(row) : ""}${row.SpecialistName ? "\nSpecialist: " + arJobNames(row) : ""}${row.Notes ? "\nRequest note: " + row.Notes : ""}`;
+}
+function arMail(row, o) {
+  const html = emailBanner(o.color || "#1d4ed8", o.bg || "#dbeafe", o.banner) +
+    `<p style="font-size:14px;color:#374151;line-height:1.6;margin:0 0 12px;">${o.intro}</p>` + (o.extraHtml || "") +
+    arDetailsCard(row) + emailButtonNote((o.next ? "<strong>Next step:</strong> " + o.next + "<br>" : "") + "Open the app: " + APP_URL) + EMAIL_SIGNOFF_HTML;
+  arSend({ to: o.to, cc: o.cc, row: row, subject: o.subject, html: html,
+    plain: o.introPlain + "\n\n" + arPlain(row) + (o.next ? "\n\nNext step: " + o.next.replace(/<[^>]+>/g, "") : "") + "\n\nOpen the app: " + APP_URL });
+}
+function arTodoHtml(items) {
+  return `<div style="margin:0 0 14px;">` + items.map(t => `<div style="font-size:12.5px;color:#374151;padding:3px 0;">☐ <span style="color:#6d28d9;font-weight:700;">${escHtml(t.cat)}:</span> ${escHtml(t.text)}${t.qty ? " ×" + escHtml(t.qty) : ""}</div>`).join("") + `</div>`;
+}
+function arCertRequestHtml(row, list) {
+  const info = srJson(row.CertInfoJSON, {});
+  const certs = arCertsOf(row);
+  const tr = (k, v) => `<tr><td style="padding:4px 8px;color:#6b7280;width:110px;vertical-align:top;">${k}</td><td style="padding:4px 8px;color:#0a1930;font-weight:700;">${escHtml(v || "—")}</td></tr>`;
+  const dates = info.date ? fmtDateForEmail(srDateFromInput(info.date)) + (info.endDate && info.endDate !== info.date ? " to " + fmtDateForEmail(srDateFromInput(info.endDate)) : "") : "";
+  return `<table width="100%" style="font-size:12.5px;border:1px solid #e5e7eb;border-radius:10px;margin:0 0 14px;">
+      ${tr("Title", info.title)}${tr("Institution", info.institution)}${tr("Date", dates)}${tr("Venue", info.venue)}${tr("Trainor", info.trainor)}
+    </table>` + list.map(c => {
+      const names = (certs[c.key] && certs[c.key].names) || [];
+      return `<div style="font-size:12.5px;font-weight:800;color:#0a1930;margin:10px 0 4px;">${c.label}${c.needsNames ? " — " + names.length + " name" + (names.length === 1 ? "" : "s") : ""}${certs[c.key] && certs[c.key].resent ? ' <span style="color:#b45309;">(updated)</span>' : ""}</div>` +
+        (names.length ? `<ol style="margin:0 0 8px;padding-left:22px;font-size:12.5px;color:#374151;">${names.map(n => `<li>${escHtml(n)}</li>`).join("")}</ol>` : "");
+    }).join("");
+}
+/** Short sample summary for emails on Proof of Concept jobs. */
+function arPocHtml(row) {
+  const p = srJson(row.PocJSON, null);
+  if (!p || !p.sampleName) return "";
+  const line = (k, v) => v ? `<tr><td style="padding:4px 10px 4px 0;color:#6b7280;vertical-align:top;white-space:nowrap;">${k}</td><td style="padding:4px 0;color:#111827;">${escHtml(v)}</td></tr>` : "";
+  return `<div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:10px;padding:12px 14px;margin:0 0 12px;">
+    <div style="font-weight:800;color:#0a1930;margin-bottom:6px;">🔬 Sample Analysis Request</div><table style="font-size:13px;border-collapse:collapse;">` +
+    line("Sample", p.sampleName) + line("State", p.state === "Other" ? p.stateOther : p.state + (p.state === "Solution" && p.solution ? " — " + p.solution : "")) +
+    line("Objective", p.objective) + line("Hazards", (p.hazards || []).join(", ")) + line("Handling", p.handling) + `</table></div>`;
+}
+function arNotifySubmitted(row) {
+  const proposed = row.ProposedUsername ? arFindUser(row.ProposedUsername) : null;
+  arMail(row, {
+    to: arLeadEmails(row.Team), cc: [row.RequestorEmail, row.AccountEmail],
+    subject: "New application request: " + arTag(row), banner: "📥 New " + row.JobType + " request — " + row.Team + " Apps",
+    intro: `<strong>${escHtml(row.RequestorName)}</strong> filed a new request.` +
+      (proposed ? ` They already talked to <strong>${escHtml(proposed.FullName)}</strong>, who can take it with “I'm handling this”. You can still assign someone else.` : ""),
+    introPlain: row.RequestorName + " filed a new request." + (proposed ? " They talked to " + proposed.FullName + " already." : ""),
+    next: proposed ? "Wait for " + escHtml(shortFirstName(proposed.FullName)) + ", or assign a specialist." : "Assign a specialist in <strong>Application Requests</strong>.",
+    extraHtml: arPocHtml(row), color: "#92400e", bg: "#fef3c7",
+  });
+  if (proposed && proposed.Email) {
+    arMail(row, {
+      to: [proposed.Email], subject: "Are you handling this? " + arTag(row), banner: "🙋 " + row.RequestorName + " named you for this job",
+      intro: `<strong>${escHtml(row.RequestorName)}</strong> said they talked to you about this. Tap <strong>I'm handling this</strong> and set the date, or <strong>Let my lead assign</strong> so ${escHtml(arLeadName(row.Team))} picks someone.`,
+      introPlain: row.RequestorName + " named you for this job. Open My Apps Jobs to take it or pass it to your lead.",
+      extraHtml: arPocHtml(row),
+      next: "Open <strong>My Apps Jobs</strong>.",
+    });
+  }
+}
+function arNotifyAssigned(row, actor, previousEmail) {
+  const self = actor.Username === row.SpecialistUsername;
+  arMail(row, {
+    to: arJobEmails(row), cc: [row.RequestorEmail, row.AccountEmail].concat(self ? arLeadEmails(row.Team) : []).concat(previousEmail ? [previousEmail] : []),
+    subject: (self ? "Taken by " + shortFirstName(row.SpecialistName) : "Assigned") + ": " + arTag(row),
+    banner: "📅 " + arJobNames(row) + " · " + arWhen(row),
+    intro: self ? `<strong>${escHtml(actor.FullName)}</strong> is handling this job.` : `<strong>${escHtml(actor.FullName)}</strong> assigned this job to <strong>${escHtml(arJobNames(row))}</strong>.`,
+    introPlain: self ? actor.FullName + " is handling this job." : actor.FullName + " assigned this job to " + arJobNames(row) + ".",
+    extraHtml: arPocHtml(row),
+    next: "Specialist: build your to-do list (reagents, machines, worksheet…) in <strong>My Apps Jobs</strong>." +
+      (arCertStatus(arCertsOf(row)) === "ToSend" ? " Send the certificate details to " + escHtml(arCertMakerName()) + " early if a training agenda is needed." : ""),
+  });
+}
+function arNotifyContinuation(row, by, stillHandling) {
+  arMail(row, {
+    to: stillHandling ? [row.RequestorEmail, row.AccountEmail] : arLeadEmails(row.Team),
+    cc: stillHandling ? arLeadEmails(row.Team) : [row.RequestorEmail, row.AccountEmail].concat(arJobEmails(row)),
+    subject: "Needs another visit: " + arTag(row),
+    banner: stillHandling ? "🔁 Continuation — next visit " + arWhen(row) : "🔁 Continuation — please assign",
+    intro: stillHandling ? `${escHtml(by.FullName)} is still handling this. Next visit: <strong>${arWhen(row)}</strong>.`
+      : `${escHtml(by.FullName)} logged a visit; the job needs another one and is back with you to assign.`,
+    introPlain: stillHandling ? by.FullName + " is still handling this. Next visit: " + arWhen(row) : by.FullName + " handed the continuation back to the lead.",
+    extraHtml: row.PendingReason ? `<p style="font-size:13px;color:#374151;margin:0 0 12px;"><strong>Reason:</strong> ${escHtml(row.PendingReason)}</p>` : "",
+    next: stillHandling ? "" : "Assign a specialist in <strong>Application Requests</strong>.", color: "#6d28d9", bg: "#ede9fe",
+  });
+}
+function arNotifyDone(row, by) {
+  const cs = arCertStatus(arCertsOf(row));
+  arMail(row, {
+    to: [row.RequestorEmail, row.AccountEmail], cc: arLeadEmails(row.Team),
+    subject: "Job done: " + arTag(row), banner: "✅ Job done — " + fmtDateForEmail(row.DateJobDone), color: "#166534", bg: "#dcfce7",
+    intro: `${escHtml(by.FullName)} finished this job.` + (row.CompletionNote ? " " + escHtml(row.CompletionNote) : "") +
+      (cs === "ToSend" ? " Certificates still need to be sent to " + escHtml(arCertMakerName()) + "." : ""),
+    introPlain: by.FullName + " finished this job." + (row.CompletionNote ? " " + row.CompletionNote : ""),
+  });
+}
+function arNotifyCertRequest(row, list, by) {
+  const makers = arCertMakers().map(x => x.Email);
+  arMail(row, {
+    to: makers.length ? makers : arLeadEmails(row.Team), cc: arJobEmails(row).concat([by.Email]),
+    subject: "Please make: " + list.map(c => c.label).join(", ") + " — " + arTag(row), banner: "🎓 " + list.map(c => c.label).join(" · "),
+    intro: `${escHtml(by.FullName)} needs the following made:`,
+    introPlain: by.FullName + " needs: " + list.map(c => c.label).join(", "),
+    extraHtml: arCertRequestHtml(row, list), next: "Mark each one done in <strong>Certificates</strong> when it's ready.",
+  });
+}
